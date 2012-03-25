@@ -87,6 +87,26 @@ exports.BattleFormats = {
 		ruleset: ['Pokemon', 'SleepClause', 'SpeciesClause', 'Standard', 'TeamPreview'],
 		banlist: ['Uber','OU','BL','UU','BL2','RU','BL3', 'SnowWarning','Drought', 'ShellSmash + BatonPass']
 	},
+	LCUbers: {
+		effectType: 'Format',
+		name: "LC Ubers",
+		ranked: true,
+		challengeShow: true,
+		searchShow: true,
+//		isTeambuilderFormat: true, // I don't know, so left out for now
+		ruleset: ['Pokemon', 'SleepClause', 'SpeciesClause', 'Standard', 'TeamPreview', 'LCUbersBans'],
+		banlist: []
+	},
+	LC: {
+		effectType: 'Format',
+		name: "LC",
+		ranked: true,
+		challengeShow: true,
+		searchShow: true,
+//		isTeambuilderFormat: true, // I don't know, so left out for now
+		ruleset: ['Pokemon', 'SleepClause', 'SpeciesClause', 'Standard', 'TeamPreview', 'LCUbersBans', 'LCBans'],
+		banlist: []
+	},
 	Hackmons: {
 		effectType: 'Format',
 		name: "Hackmons",
@@ -309,5 +329,38 @@ exports.BattleFormats = {
 		onStart: function() {
 			this.add('rule Freeze Clause');
 		}
+	},
+    LCUbersBans: {
+        effectType: 'Banlist',
+        banlist: [
+            // Items
+            'BerryJuice',
+        ],
+        validateSet: function(set) {
+            var pokemon = this.getTemplate(set.species);
+            var problems = [];
+
+            if (pokemon.prevo !== "")
+                problems.push(set.species + " is not the lowest evolution.");
+            if (!pokemon.nfe)
+                problems.push(set.species + " is unable to evolve.");
+
+            if (set.level !== 5)
+                problems.push(set.species + " is not level 5.");
+
+            return problems;
+        }
+    },
+    LCBans: {
+        effectType: 'Banlist',
+        banlist: [
+            'Carvanha',
+            'Meditite',
+            'Scyther',
+            'Sneasel',
+            'Tangela',
+            'Vulpix',
+            'Yanma'
+        ]
 	}
 };
