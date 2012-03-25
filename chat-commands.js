@@ -682,7 +682,7 @@ function parseCommandLocal(user, cmd, target, room, socket, message)
 				return true;
 			}
 			
-			if (targetUser.group === '@' || target(user.group === '&' || user.group === '!'))
+			if (targetUser.group === '@' || targetUser.group === '&')
 			{
 				room.add(''+targetUser.name+' was demoted to moderator by '+user.name+'.');
 			}
@@ -740,7 +740,7 @@ function parseCommandLocal(user, cmd, target, room, socket, message)
 				return true;
 			}
 			
-			if (target(user.group === '&' || user.group === '!'))
+			if (targetUser.group === '&')
 			{
 				room.add(''+targetUser.name+' was demoted to admin by '+user.name+'.');
 			}
@@ -816,7 +816,7 @@ function parseCommandLocal(user, cmd, target, room, socket, message)
 				return true;
 			}
 			
-			if (target(user.group === '&' || user.group === '!'))
+			if (targetUser.group === '&')
 			{
 				room.add(''+targetUser.name+' was demoted to admin by '+user.name+'.');
 				targetUser.group = '@';
