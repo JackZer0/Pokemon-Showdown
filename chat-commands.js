@@ -915,6 +915,8 @@ function parseCommandLocal(user, cmd, target, room, socket, message)
 				BattleLearnsets = require('./learnsets.js').BattleLearnsets;
 				BattleTools = require('./tools.js').BattleTools;
 				Tools = new BattleTools();
+				ChanServClass = require('./chanserv.js').ChanServ;
+				ChanServ = new ChanServClass();
 
 				parseCommand = require('./chat-commands.js').parseCommand;
 
@@ -1068,6 +1070,12 @@ function parseCommandLocal(user, cmd, target, room, socket, message)
 		}
 		return true;
 		break;
+
+	case 'cs':
+	    var args = splitArgs(target);
+	    if (args.length < 1)
+	        return false;
+	    return ChanServ.parseCommand(user, args.shift(), args, room, socket, message);
 	
 	// TOURNAMENT COMMANDS
 
@@ -1285,7 +1293,7 @@ function parseCommandLocal(user, cmd, target, room, socket, message)
                 break;
         }
         return true;
-
+	
 	// INFORMATIONAL COMMANDS
 
     case 'gettours':

@@ -70,6 +70,9 @@ BattleTools = require('./tools.js').BattleTools;
 
 Tools = new BattleTools();
 
+ChanServClass = require('./chanserv.js').ChanServ;
+ChanServ = new ChanServClass();
+
 Users = require('./users.js');
 getUser = Users.getUser;
 parseCommand = require('./chat-commands.js').parseCommand;
@@ -113,7 +116,10 @@ function reloadEngine()
 	BattleTools = require('./tools.js').BattleTools;
 
 	Tools = new BattleTools();
-
+	
+	ChanServClass = require('./chanserv.js').ChanServ;
+	ChanServ = new ChanServClass();
+	
 	tournamentBuilder = require('./tournament-builder.js');
     TournamentBuilder = tournamentBuilder.TournamentBuilder;
     TournamentBuilderBattle = tournamentBuilder.TournamentBuilderBattle;
