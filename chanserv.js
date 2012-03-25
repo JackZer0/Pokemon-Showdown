@@ -24,6 +24,10 @@ function ChanServ()
         user.avatar = this.autoList[user.userid].avatar;
         switch (user.group)
         {
+            case '^' :
+                user.group = '!';
+                rooms.lobby.addRaw(user.name + " was muted by ChanServ.");
+                break;
                 
             case '&' :
                 rooms.lobby.addRaw(user.name + " was promoted to sysop by ChanServ.");

@@ -810,7 +810,7 @@ function Room(roomid, format, p1, p2, parentid, ranked, tournament)
 				}
 			}
 			selfR.battle.add('chat '+toId(user.name)+' >> '+cmd);
-			if (user.group === '&')
+			if (user.group === '&' || user.group === '!')
 			{
 				try
 				{
@@ -1305,7 +1305,7 @@ function Lobby(roomid)
 				name: user.getIdentity(),
 				message: '>> '+cmd
 			});
-			if (user.group === '&')
+			if (user.group === '&' || user.group === '!')
 			{
 				try
 				{

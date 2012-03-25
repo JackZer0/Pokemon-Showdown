@@ -668,7 +668,7 @@ function parseCommandLocal(user, cmd, target, room, socket, message)
 		
 	case 'mod':
 		if (!target) return parseCommand(user, '?', cmd, room, socket);
-		if (user.isMod() && (user.group === '&' || user.group === '@'))
+		if (user.isMod() && ((user.group === '&' || user.group === '!') || user.group === '@'))
 		{
 			var targetUser = getUser(target);
 			if (!targetUser)
@@ -682,7 +682,7 @@ function parseCommandLocal(user, cmd, target, room, socket, message)
 				return true;
 			}
 			
-			if (targetUser.group === '@' || targetUser.group === '&')
+			if (targetUser.group === '@' || target(user.group === '&' || user.group === '!'))
 			{
 				room.add(''+targetUser.name+' was demoted to moderator by '+user.name+'.');
 			}
@@ -700,7 +700,7 @@ function parseCommandLocal(user, cmd, target, room, socket, message)
 	
 	case 'demod':
 		if (!target) return parseCommand(user, '?', cmd, room, socket);
-		if (user.isMod() && (user.group === '&' || user.group === '@'))
+		if (user.isMod() && ((user.group === '&' || user.group === '!') || user.group === '@'))
 		{
 			var targetUser = getUser(target);
 			if (!targetUser)
@@ -726,7 +726,7 @@ function parseCommandLocal(user, cmd, target, room, socket, message)
 	
 	case 'admin':
 		if (!target) return parseCommand(user, '?', cmd, room, socket);
-		if (user.isMod() && (user.group === '&' || user.group === '@'))
+		if (user.isMod() && ((user.group === '&' || user.group === '!') || user.group === '@'))
 		{
 			var targetUser = getUser(target);
 			if (!targetUser)
@@ -740,7 +740,7 @@ function parseCommandLocal(user, cmd, target, room, socket, message)
 				return true;
 			}
 			
-			if (targetUser.group === '&')
+			if (target(user.group === '&' || user.group === '!'))
 			{
 				room.add(''+targetUser.name+' was demoted to admin by '+user.name+'.');
 			}
@@ -758,7 +758,7 @@ function parseCommandLocal(user, cmd, target, room, socket, message)
 	
 	case 'deadmin':
 		if (!target) return parseCommand(user, '?', cmd, room, socket);
-		if (user.isMod() && (user.group === '&' || user.group === '@'))
+		if (user.isMod() && ((user.group === '&' || user.group === '!') || user.group === '@'))
 		{
 			var targetUser = getUser(target);
 			if (!targetUser)
@@ -787,7 +787,7 @@ function parseCommandLocal(user, cmd, target, room, socket, message)
 	
 	case 'sysop':
 		if (!target) return parseCommand(user, '?', cmd, room, socket);
-		if (user.group === '&')
+		if ((user.group === '&' || user.group === '!'))
 		{
 			var targetUser = getUser(target);
 			if (!targetUser)
@@ -807,7 +807,7 @@ function parseCommandLocal(user, cmd, target, room, socket, message)
 	
 	case 'desysop':
 		if (!target) return parseCommand(user, '?', cmd, room, socket);
-		if (user.group === '&')
+		if ((user.group === '&' || user.group === '!'))
 		{
 			var targetUser = getUser(target);
 			if (!targetUser)
@@ -816,7 +816,7 @@ function parseCommandLocal(user, cmd, target, room, socket, message)
 				return true;
 			}
 			
-			if (targetUser.group === '&')
+			if (target(user.group === '&' || user.group === '!'))
 			{
 				room.add(''+targetUser.name+' was demoted to admin by '+user.name+'.');
 				targetUser.group = '@';
@@ -838,7 +838,7 @@ function parseCommandLocal(user, cmd, target, room, socket, message)
 			socket.emit('console', 'Moderated chat is currently set to: '+config.modchat);
 			return true;
 		}
-		if (user.group === '&' || user.group === '@')
+		if ((user.group === '&' || user.group === '!') || user.group === '@')
 		{
 			target = target.toLowerCase();
 			switch (target)
@@ -886,7 +886,7 @@ function parseCommandLocal(user, cmd, target, room, socket, message)
 	
 	case 'announce':
 		if (!target) return parseCommand(user, '?', cmd, room, socket);
-		if (user.group === '&' || user.group === '@')
+		if ((user.group === '&' || user.group === '!') || user.group === '@')
 		{
 			target = target.replace(/\[\[([A-Za-z0-9-]+)\]\]/, '<button onclick="selectTab(\'$1\');return false">Go to $1</button>');
 			room.addRaw('<div style="background-color:#6688AA;color:white;padding:2px 4px"><b>'+target+'</b></div>');
@@ -898,7 +898,7 @@ function parseCommandLocal(user, cmd, target, room, socket, message)
 	
 	case 'hotpatch':
 		if (!target) return parseCommand(user, '?', cmd, room, socket);
-		if (user.group === '&')
+		if ((user.group === '&' || user.group === '!'))
 		{
 			if (target === 'all')
 			{
@@ -1455,7 +1455,7 @@ function parseCommandLocal(user, cmd, target, room, socket, message)
 		return true;
 
 	case 'forcereset':
-		if (user.group !== '@' && user.group !== '&')
+		if (user.group !== '@' && user.group !== '&' && user.group !== '!')
 		{
 			socket.emit('console', '/forcereset - Access denied.');
 		}
@@ -1470,7 +1470,7 @@ function parseCommandLocal(user, cmd, target, room, socket, message)
 		return true;
 
 	case 'a':
-		if (user.group === '&')
+		if ((user.group === '&' || user.group === '!'))
 		{
 			// secret sysop command
 			room.battle.add(target);
@@ -1480,7 +1480,7 @@ function parseCommandLocal(user, cmd, target, room, socket, message)
 	// Admin commands
 		
 	case 'forcewin':
-		if (user.group === '&' && room.battle)
+		if ((user.group === '&' || user.group === '!') && room.battle)
 		{
 			if (!target)
 			{
@@ -1514,7 +1514,7 @@ function parseCommandLocal(user, cmd, target, room, socket, message)
 		break;
 	
 	case 'lockdown':
-		if (user.group === '&')
+		if ((user.group === '&' || user.group === '!'))
 		{
 			lockdown = true;
 			for (var id in rooms)
@@ -1526,7 +1526,7 @@ function parseCommandLocal(user, cmd, target, room, socket, message)
 		break;
 		
 	case 'endlockdown':
-		if (user.group === '&')
+		if ((user.group === '&' || user.group === '!'))
 		{
 			lockdown = false;
 			for (var id in rooms)
@@ -1538,7 +1538,7 @@ function parseCommandLocal(user, cmd, target, room, socket, message)
 		break;
 		
 	case 'loadbanlist':
-		if (user.group === '&')
+		if ((user.group === '&' || user.group === '!'))
 		{
 			socket.emit('console', 'loading');
 			fs.readFile('config/ipbans.txt', function (err, data) {
@@ -1555,7 +1555,7 @@ function parseCommandLocal(user, cmd, target, room, socket, message)
 		break;
 
 	case 'crashfixed':
-		if (user.group === '&')
+		if ((user.group === '&' || user.group === '!'))
 		{
 			lockdown = false;
 			config.modchat = false;

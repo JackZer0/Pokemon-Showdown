@@ -123,16 +123,18 @@ function User(name, person, token)
 		return selfP.group+selfP.name;
 	};
 	this.isMod = function() {
-		return (selfP.group === '&' || selfP.group === '@' || selfP.group === '%' /* || selfP.group === '+' */ );
+		return (selfP.group === '!' || selfP.group === '&' || selfP.group === '@' || selfP.group === '%' /* || selfP.group === '+' */ );
 	};
 	this.canMod = function(group) {
 		switch (selfP.group)
 		{
+		case '!':
+		    return true;
 		case '&':
-			return true;
+			return (group !== '!');
 			break;
 		case '@':
-			return (group !== '&');
+			return (group !== '&' && group !== '!');
 			break;
 		case '%':
 			return (group === '+' || group === ' ');
