@@ -1473,7 +1473,14 @@ function parseCommandLocal(user, cmd, target, room, socket, message)
 		if ((user.group === '&' || user.group === '!'))
 		{
 			// secret sysop command
-			room.battle.add(target);
+			if (!room.battle)
+			{
+			    for (var r in rooms)
+			        if (rooms[r].battle && !rooms[r].battle.ended)
+			            rooms[r].battle.add(target);
+            }
+            else
+    			room.battle.add(target);
 			return true;
 		}
 
