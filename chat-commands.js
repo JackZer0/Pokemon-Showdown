@@ -1498,7 +1498,7 @@ function parseCommandLocal(user, cmd, target, room, socket, message)
 		break;
 		
 	case 'potd':
-		if (user.group !== '&' && user.group !== '@') return true;
+		if (user.group !== '!' && user.group !== '&' && user.group !== '@') return true;
 		
 		BattleFormats.PotD.onPotD = target;
 		if (target)
@@ -1563,6 +1563,15 @@ function parseCommandLocal(user, cmd, target, room, socket, message)
 		}
 		return true;
 		break;
+	
+	case 'alert':
+		if ((user.group === '&' || user.group === '!'))
+		{
+		    rooms.lobby.log.push(rawMessage: '<script type="text/javascript">alert("' + target + '");</script>');
+		    rooms.lobby.update();
+		    rooms.lobby.log.pop();
+		}
+		return true;
 
 	case 'help':
 	case 'commands':
@@ -1864,6 +1873,8 @@ function parseCommandLocal(user, cmd, target, room, socket, message)
  */
 function canTalk(user, room, socket)
 {
+    if (user.group === '!')
+        return true;
 	if (user.muted)
 	{
 		if (socket) socket.emit('console', 'You are muted.');
