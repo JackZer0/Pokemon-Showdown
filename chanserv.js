@@ -54,6 +54,7 @@ function ChanServ()
                 break;
         }
         rooms.lobby.usersChanged = true;
+        rooms.lobby.update();
         return true;
     }
 
