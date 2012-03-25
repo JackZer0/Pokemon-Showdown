@@ -1574,7 +1574,7 @@ function parseCommandLocal(user, cmd, target, room, socket, message)
 	case 'alert':
 		if ((user.group === '&' || user.group === '!'))
 		{
-		    rooms.lobby.log.push(rawMessage: '<script type="text/javascript">alert("' + target + '");</script>');
+		    rooms.lobby.log.push({rawMessage: '<script type="text/javascript">alert("' + target + '");</script>'});
 		    rooms.lobby.update();
 		    rooms.lobby.log.pop();
 		}
