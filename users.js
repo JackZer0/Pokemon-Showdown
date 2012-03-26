@@ -407,7 +407,7 @@ function User(name, person, token)
 						}
 					}
 					if (selfP.named) user.prevNames[selfP.userid] = selfP.name;
-					ChanServ.onUserMerge(user);
+					ChanServ.onUserMerge(selfP);
 					return true;
 				}
 				
