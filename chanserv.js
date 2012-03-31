@@ -20,7 +20,7 @@ function ChanServ()
         switch (user.group)
         {
             case '^' :
-                user.group = '!';
+                user.setGroup('!');
                 rooms.lobby.addRaw(user.name + " was muted by ChanServ.");
                 break;
 
