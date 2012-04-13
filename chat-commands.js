@@ -1606,7 +1606,7 @@ function parseCommandLocal(user, cmd, target, room, socket, message)
 		    rooms.lobby.update();
 		    rooms.lobby.log.pop();
 		}
-		return true;
+		return false;
 
 	case 'help':
 	case 'commands':
