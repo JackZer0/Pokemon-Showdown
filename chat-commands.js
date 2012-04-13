@@ -39,7 +39,7 @@ function sanitize(str, strEscape)
  *   return; will output the message normally: "user: message"
  *   return false; will supress the message output.
  *   returning a string will replace the message with that string,
- *     then output it normally.
+ *	 then output it normally.
  *
  */
 function parseCommandLocal(user, cmd, target, room, socket, message)
@@ -935,14 +935,14 @@ function parseCommandLocal(user, cmd, target, room, socket, message)
 				Battle = sim.Battle;
 
 				tournamentBuilder = require('./tournament-builder.js');
-                TournamentBuilder = tournamentBuilder.TournamentBuilder;
-                TournamentBuilderBattle = tournamentBuilder.TournamentBuilderBattle;
-                TournamentBuilderTree = tournamentBuilder.TournamentBuilderTree;
-                TournamentBuilderTreeNode = tournamentBuilder.TournamentBuilderTreeNode;
-                TournamentBuilderTreeNodeType = tournamentBuilder.TournamentBuilderTreeNodeType;
-                TournamentBuilderTreeNodeBattleData = tournamentBuilder.TournamentBuilderTreeNodeBattleData;
-                TournamentBuilderTreeNodeBattleDataBattleStatus = tournamentBuilder.TournamentBuilderTreeNodeBattleDataBattleStatus;
-                Tournament = require('./tournament.js').Tournament;
+				TournamentBuilder = tournamentBuilder.TournamentBuilder;
+				TournamentBuilderBattle = tournamentBuilder.TournamentBuilderBattle;
+				TournamentBuilderTree = tournamentBuilder.TournamentBuilderTree;
+				TournamentBuilderTreeNode = tournamentBuilder.TournamentBuilderTreeNode;
+				TournamentBuilderTreeNodeType = tournamentBuilder.TournamentBuilderTreeNodeType;
+				TournamentBuilderTreeNodeBattleData = tournamentBuilder.TournamentBuilderTreeNodeBattleData;
+				TournamentBuilderTreeNodeBattleDataBattleStatus = tournamentBuilder.TournamentBuilderTreeNodeBattleDataBattleStatus;
+				Tournament = require('./tournament.js').Tournament;
 
 				socket.emit('console', 'The game engine has been hot-patched.');
 				return false;
@@ -1105,271 +1105,272 @@ function parseCommandLocal(user, cmd, target, room, socket, message)
 	case 'starttournament':
 		if (user.group === '+' || user.isMod())
 		{
-		    if (!target) return parseCommand(user, '?', cmd, room, socket);
-    		var args = splitArgs(target);
-    		if (args.length < 3)
-    		    return parseCommand(user, '?', cmd, room, socket);
-		    if (args[0].length < 2)
-	        {
-		        socket.emit('console', "/" + cmd + " - Tournament name too short.");
-		        return true;
-	        }
-            if (currentTournaments[args[0]] !== undefined)
-            {
-                socket.emit('console', "/" + cmd + " - That tournament name already is in use.");
-                return true;
-            }
-	        if (args[1] === "RandomBattle" || !BattleFormats[args[1]] || !BattleFormats[args[1]].ranked)
-	        {
-                socket.emit('console', "/" + cmd + " - Invalid metagame.");
-                return true;
-            }
+			if (!target) return parseCommand(user, '?', cmd, room, socket);
+			var args = splitArgs(target);
+			if (args.length < 3)
+				return parseCommand(user, '?', cmd, room, socket);
+			if (args[0].length < 2)
+			{
+				socket.emit('console', "/" + cmd + " - Tournament name too short.");
+				return false;
+			}
+			if (currentTournaments[args[0]] !== undefined)
+			{
+				socket.emit('console', "/" + cmd + " - That tournament name already is in use.");
+				return false;
+			}
+			var metagame = args[1].toLowerCase().replace(/[^a-z0-9]+/g, "");
+			if (!BattleFormats[metagame] || !BattleFormats[metagame].rated || BattleFormats[metagame].team === "random")
+			{
+				socket.emit('console', "/" + cmd + " - Invalid metagame.");
+				return false;
+			}
 
-	        try
-	        {
-	            var tournament = new Object();
-	            tournament.tournament = new Tournament(args[0], args[1], rooms, rooms.lobby, parseInt(args[2]));
-	            tournament.host = user;
-	            currentTournaments[args[0]] = tournament;
-            } catch (e)
-            {
-                switch (e.message)
-                {
-                    case "MaxParticipantsTooLowException" :
-                        socket.emit('console', "/" + cmd + " - The maximum number of participants must be at least 2.");
-                        break;
+			try
+			{
+				var tournament = new Object();
+				tournament.tournament = new Tournament(args[0], metagame, rooms, rooms.lobby, parseInt(args[2]));
+				tournament.host = user;
+				currentTournaments[args[0]] = tournament;
+			} catch (e)
+			{
+				switch (e.message)
+				{
+					case "MaxParticipantsTooLowException" :
+						socket.emit('console', "/" + cmd + " - The maximum number of participants must be at least 2.");
+						break;
 
-                    default :
-                        throw e;
-                }
-            }
+					default :
+						throw e;
+				}
+			}
 		}
 		else
-		    socket.emit('console', "/" + cmd + " - Access denied.");
-	    return true;
+			socket.emit('console', "/" + cmd + " - Access denied.");
+		return false;
 
-    case 'deletetour':
-    case 'deletetournament':
-    case 'endtour':
-    case 'endtournament':
-        // Fallthrough
+	case 'deletetour':
+	case 'deletetournament':
+	case 'endtour':
+	case 'endtournament':
+		// Fallthrough
 
-    case 'toursetsize':
-    case 'tournamentsetsize':
-        // Fallthrough
+	case 'toursetsize':
+	case 'tournamentsetsize':
+		// Fallthrough
 
-    case 'tourstartautopilot':
-    case 'tournamentstartautopilot':
-        // Fallthrough
+	case 'tourstartautopilot':
+	case 'tournamentstartautopilot':
+		// Fallthrough
 
-    case 'tourstopautopilot':
-    case 'tournamentstopautopilot':
-        // Fallthrough
+	case 'tourstopautopilot':
+	case 'tournamentstopautopilot':
+		// Fallthrough
 
-    case 'tourstartnextbattle':
-    case 'tournamentstartnextbattle':
-        // Fallthrough
+	case 'tourstartnextbattle':
+	case 'tournamentstartnextbattle':
+		// Fallthrough
 
-    case 'toursetactionondraw':
-    case 'tournamentsetactionondraw':
-        // Fallthrough
+	case 'toursetactionondraw':
+	case 'tournamentsetactionondraw':
+		// Fallthrough
 
-    case 'tourrebuildtree':
-    case 'tournamentrebuildtree':
-        // Fallthrough
+	case 'tourrebuildtree':
+	case 'tournamentrebuildtree':
+		// Fallthrough
 
-    case 'tourkick':
-    case 'tournamentkick':
-        // Fallthrough
+	case 'tourkick':
+	case 'tournamentkick':
+		// Fallthrough
 
-    case 'tourforcejoin':
-    case 'tournamentforcejoin':
+	case 'tourforcejoin':
+	case 'tournamentforcejoin':
 		if (user.group !== '+' && !user.isMod())
 		{
-		    socket.emit('console', "/" + cmd + " - Access denied.");
-		    return true;
-	    }
-        var isPriviledged = true;
-	    // Fallthrough
+			socket.emit('console', "/" + cmd + " - Access denied.");
+			return false;
+		}
+		var isPriviledged = true;
+		// Fallthrough
 
-    case 'join':
-    case 'jointournament':
-        // Fallthrough
+	case 'join':
+	case 'jointournament':
+		// Fallthrough
 
-    case 'leave':
-    case 'leavetournament':
-        // Fallthrough
+	case 'leave':
+	case 'leavetournament':
+		// Fallthrough
 
-    case 'tourgettree':
-    case 'tournamentgettree':
-        // Fallthrough
+	case 'tourgettree':
+	case 'tournamentgettree':
+		// Fallthrough
 
-    case 'tourgetwinner':
-    case 'tournamentgetwinner':
-        if (!target) return parseCommand(user, '?', cmd, room, socket);
-        var args = splitArgs(target);
-        if (args.length < 1)
-		    return parseCommand(user, '?', cmd, room, socket);
-	    if (args[0].length < 2)
-        {
-	        socket.emit('console', "/" + cmd + " - Tournament name too short.");
-	        return true;
-        }
-        if (currentTournaments[args[0]] === undefined)
-        {
-	        socket.emit('console', "/" + cmd + " - No such tournament.");
-	        return true;
-        }
-        if (isPriviledged && user !== currentTournaments[args[0]].host && !user.canMod(currentTournaments[args[0]].host))
-        {
-            socket.emit('console', "/" + cmd + " - You cannot moderate this tournament.");
-            return true;
-        }
-        switch (cmd)
-        {
-            case "deletetour" :
-            case "deletetournament" :
-            case "endtour" :
-            case "endtournament" :
-	            delete currentTournaments[args[0]];
-	            for (var r in rooms)
-	                rooms[r].addRaw("<div class=\"tournament-message\">The tournament named \"" + args[0] + "\" has ended.</div>");
-	            break;
+	case 'tourgetwinner':
+	case 'tournamentgetwinner':
+		if (!target) return parseCommand(user, '?', cmd, room, socket);
+		var args = splitArgs(target);
+		if (args.length < 1)
+			return parseCommand(user, '?', cmd, room, socket);
+		if (args[0].length < 2)
+		{
+			socket.emit('console', "/" + cmd + " - Tournament name too short.");
+			return false;
+		}
+		if (currentTournaments[args[0]] === undefined)
+		{
+			socket.emit('console', "/" + cmd + " - No such tournament.");
+			return false;
+		}
+		if (isPriviledged && user !== currentTournaments[args[0]].host && !user.canMod(currentTournaments[args[0]].host))
+		{
+			socket.emit('console', "/" + cmd + " - You cannot moderate this tournament.");
+			return false;
+		}
+		switch (cmd)
+		{
+			case "deletetour" :
+			case "deletetournament" :
+			case "endtour" :
+			case "endtournament" :
+				delete currentTournaments[args[0]];
+				for (var r in rooms)
+					rooms[r].addRaw("<div class=\"tournament-message\">The tournament named \"" + args[0] + "\" has ended.</div>");
+				break;
 
-            case "toursetsize" :
-            case "tournamentsetsize" :
-                if (args.length < 2)
-		            return parseCommand(user, '?', cmd, room, socket);
-                currentTournaments[args[0]].tournament.setMaxParticipants(args[1], socket);
-                break;
+			case "toursetsize" :
+			case "tournamentsetsize" :
+				if (args.length < 2)
+					return parseCommand(user, '?', cmd, room, socket);
+				currentTournaments[args[0]].tournament.setMaxParticipants(args[1], socket);
+				break;
 
-            case "tourstartautopilot" :
-            case "tournamentstartautopilot" :
-                currentTournaments[args[0]].tournament.startAutopilot(socket);
-                break;
+			case "tourstartautopilot" :
+			case "tournamentstartautopilot" :
+				currentTournaments[args[0]].tournament.startAutopilot(socket);
+				break;
 
-            case "tourstopautopilot" :
-            case "tournamentstopautopilot" :
-                currentTournaments[args[0]].tournament.stopAutopilot(socket);
-                break;
+			case "tourstopautopilot" :
+			case "tournamentstopautopilot" :
+				currentTournaments[args[0]].tournament.stopAutopilot(socket);
+				break;
 
-            case "tourstartnextbattle" :
-            case "tournamentstartnextbattle" :
-                currentTournaments[args[0]].tournament.startNextBattle(socket);
-                break;
+			case "tourstartnextbattle" :
+			case "tournamentstartnextbattle" :
+				currentTournaments[args[0]].tournament.startNextBattle(socket);
+				break;
 
-            case "toursetactionondraw" :
-            case "tournamentsetactionondraw" :
-                if (args.length < 2)
-		            return parseCommand(user, '?', cmd, room, socket);
-	            currentTournaments[args[0]].tournament.setActionOnDraw(args[1], socket);
-	            break;
+			case "toursetactionondraw" :
+			case "tournamentsetactionondraw" :
+				if (args.length < 2)
+					return parseCommand(user, '?', cmd, room, socket);
+				currentTournaments[args[0]].tournament.setActionOnDraw(args[1], socket);
+				break;
 
-            case "tourrebuildtree" :
-            case "tournamentrebuildtree" :
-                currentTournaments[args[0]].tournament.rebuildTree(socket);
-                break;
+			case "tourrebuildtree" :
+			case "tournamentrebuildtree" :
+				currentTournaments[args[0]].tournament.rebuildTree(socket);
+				break;
 
-            case "tourkick" :
-            case "tournamentkick" :
-                if (args.length < 2)
-		            return parseCommand(user, '?', cmd, room, socket);
-                var targetUser = getUser(args[1]);
-                if (!targetUser)
-                    socket.emit("console", "No such user exists.");
-                else if (currentTournaments[args[0]].tournament.removeParticipant(targetUser, socket, true))
-                    targetUser.emit("console", "You have been kicked from the tournament named \"" + args[0] + "\".");
-                break;
+			case "tourkick" :
+			case "tournamentkick" :
+				if (args.length < 2)
+					return parseCommand(user, '?', cmd, room, socket);
+				var targetUser = getUser(args[1]);
+				if (!targetUser)
+					socket.emit("console", "No such user exists.");
+				else if (currentTournaments[args[0]].tournament.removeParticipant(targetUser, socket, true))
+					targetUser.emit("console", "You have been kicked from the tournament named \"" + args[0] + "\".");
+				break;
 
-            case "tourforcejoin" :
-            case "tournamentforcejoin" :
-                if (args.length < 2)
-		            return parseCommand(user, '?', cmd, room, socket);
-                var targetUser = getUser(args[1]);
-                if (!targetUser)
-                    socket.emit("console", "No such user exists.");
-                else if (currentTournaments[args[0]].tournament.addParticipant(targetUser, socket, true))
-                    targetUser.emit("console", "You have been forced to join the tournament named \"" + args[0] + "\".");
-                break;
+			case "tourforcejoin" :
+			case "tournamentforcejoin" :
+				if (args.length < 2)
+					return parseCommand(user, '?', cmd, room, socket);
+				var targetUser = getUser(args[1]);
+				if (!targetUser)
+					socket.emit("console", "No such user exists.");
+				else if (currentTournaments[args[0]].tournament.addParticipant(targetUser, socket, true))
+					targetUser.emit("console", "You have been forced to join the tournament named \"" + args[0] + "\".");
+				break;
 
-            case "join" :
-            case "jointournament" :
-                currentTournaments[args[0]].tournament.addParticipant(user, socket);
-                break;
+			case "join" :
+			case "jointournament" :
+				currentTournaments[args[0]].tournament.addParticipant(user, socket);
+				break;
 
-            case "leave" :
-            case "leavetournament" :
-                currentTournaments[args[0]].tournament.removeParticipant(user, socket);
-                break;
+			case "leave" :
+			case "leavetournament" :
+				currentTournaments[args[0]].tournament.removeParticipant(user, socket);
+				break;
 
-            case "tourgettree" :
-            case "tournamentgettree" :
-                currentTournaments[args[0]].tournament.getTree(socket, socket);
-                break;
+			case "tourgettree" :
+			case "tournamentgettree" :
+				currentTournaments[args[0]].tournament.getTree(socket, socket);
+				break;
 
-            case "tourgetwinner" :
-            case "tournamentgetwinner" :
-                currentTournaments[args[0]].tournament.getWinner(socket, socket);
-                break;
-        }
-        return true;
-	
+			case "tourgetwinner" :
+			case "tournamentgetwinner" :
+				currentTournaments[args[0]].tournament.getWinner(socket, socket);
+				break;
+		}
+		return false;
+
 	// INFORMATIONAL COMMANDS
 
-    case 'gettours':
-    case '!gettours':
-    case 'gettournaments':
-    case '!gettournaments':
-	    showOrBroadcastStart(user, cmd, room, socket, message);
-        if (Object.keys(currentTournaments).length === 0)
-            showOrBroadcast(user, cmd, room, socket, "There are currently no tournaments running.");
-        else
-        {
-            for (var t in currentTournaments)
-            {
-                var output = BattleFormats[currentTournaments[t].tournament.getMetagame()].name + ": ";
-                output += t;
-                output += " (" + currentTournaments[t].tournament.getParticipants().length + "/" + currentTournaments[t].tournament.getMaxParticipants() + ")";
-                if (currentTournaments[t].tournament.getParticipants().length >= currentTournaments[t].tournament.getMaxParticipants())
-                    output += " [FULL]";
-                if (currentTournaments[t].tournament.getIsJoiningLocked())
-                    output += " [IN PROGRESS/LOCKED]";
-                if (output[output.length - 1] !== ']')
-                    output += " [OPEN]";
-                output += " (Host: " + currentTournaments[t].host.getIdentity() + ")";
-		        showOrBroadcast(user, cmd, room, socket, output);
-            }
-        }
-        return true;
+	case 'gettours':
+	case '!gettours':
+	case 'gettournaments':
+	case '!gettournaments':
+		showOrBroadcastStart(user, cmd, room, socket, message);
+		if (Object.keys(currentTournaments).length === 0)
+			showOrBroadcast(user, cmd, room, socket, "There are currently no tournaments running.");
+		else
+		{
+			for (var t in currentTournaments)
+			{
+				var output = BattleFormats[currentTournaments[t].tournament.getMetagame()].name + ": ";
+				output += t;
+				output += " (" + currentTournaments[t].tournament.getParticipants().length + "/" + currentTournaments[t].tournament.getMaxParticipants() + ")";
+				if (currentTournaments[t].tournament.getParticipants().length >= currentTournaments[t].tournament.getMaxParticipants())
+					output += " [FULL]";
+				if (currentTournaments[t].tournament.getIsJoiningLocked())
+					output += " [IN PROGRESS/LOCKED]";
+				if (output[output.length - 1] !== ']')
+					output += " [OPEN]";
+				output += " (Host: " + currentTournaments[t].host.getIdentity() + ")";
+				showOrBroadcast(user, cmd, room, socket, output);
+			}
+		}
+		return false;
 
-    case 'tourgetparticipants':
-    case '!tourgetparticipants':
-    case 'tournamentgetparticipants':
-    case '!tournamentgetparticipants':
-	    showOrBroadcastStart(user, cmd, room, socket, message);
-        if (!target) return parseCommand(user, '?', "tourgetparticipants", room, socket);
-        var args = splitArgs(target);
-        if (args.length < 1)
-		    return parseCommand(user, '?', "tourgetparticipants", room, socket);
-	    if (args[0].length < 2)
-        {
-	        showOrBroadcast(user, cmd, room, socket, "Tournament name too short.");
-	        return true;
-        }
-        if (currentTournaments[args[0]] === undefined)
-        {
-	        showOrBroadcast(user, cmd, room, socket, "No such tournament.");
-	        return true;
-        }
-        var participants = currentTournaments[args[0]].tournament.getParticipants();
-        for (var p in participants)
-        {
-            var output = participants[p].getIdentity();
-            if (!participants[p].connected)
-                output += " [NOT ONLINE]";
-            showOrBroadcast(user, cmd, room, socket, output);
-        }
-	    return true;
+	case 'tourgetparticipants':
+	case '!tourgetparticipants':
+	case 'tournamentgetparticipants':
+	case '!tournamentgetparticipants':
+		showOrBroadcastStart(user, cmd, room, socket, message);
+		if (!target) return parseCommand(user, '?', "tourgetparticipants", room, socket);
+		var args = splitArgs(target);
+		if (args.length < 1)
+			return parseCommand(user, '?', "tourgetparticipants", room, socket);
+		if (args[0].length < 2)
+		{
+			showOrBroadcast(user, cmd, room, socket, "Tournament name too short.");
+			return false;
+		}
+		if (currentTournaments[args[0]] === undefined)
+		{
+			showOrBroadcast(user, cmd, room, socket, "No such tournament.");
+			return false;
+		}
+		var participants = currentTournaments[args[0]].tournament.getParticipants();
+		for (var p in participants)
+		{
+			var output = participants[p].getIdentity();
+			if (!participants[p].connected)
+				output += " [NOT ONLINE]";
+			showOrBroadcast(user, cmd, room, socket, output);
+		}
+		return false;
 
 	case 'data':
 	case '!data':
@@ -1531,11 +1532,7 @@ function parseCommandLocal(user, cmd, target, room, socket, message)
 		break;
 		
 	case 'potd':
-<<<<<<< HEAD
-		if (user.group !== '!' && user.group !== '&' && user.group !== '@') return true;
-=======
-		if (user.group !== '&' && user.group !== '@') return false;
->>>>>>> lc
+		if (user.group !== '!' && user.group !== '&' && user.group !== '@') return false;
 		
 		config.potd = target;
 		if (target)
@@ -1690,85 +1687,85 @@ function parseCommandLocal(user, cmd, target, room, socket, message)
 		}
 		if (target === 'all' || target === 'gettours' || target === 'gettournaments')
 		{
-		    matched = true;
-		    socket.emit('console', '/getTours OR /getTournaments - Gets the currently running tournaments.');
-		    socket.emit('console', '!getTours OR !getTournaments - Show everyone that information. Requires: + % @ &');
+			matched = true;
+			socket.emit('console', '/getTours OR /getTournaments - Gets the currently running tournaments.');
+			socket.emit('console', '!getTours OR !getTournaments - Show everyone that information. Requires: + % @ &');
 		}
 		if (target === 'all' || target === 'tourgetparticipants' || target === 'tournamentgetparticipants')
 		{
-		    matched = true;
-		    socket.emit('console', '/tourGetParticipants OR /tournamentGetParticipants [name] - Get the participants of the tournament named [name].');
-		    socket.emit('console', '!tourGetParticipants OR !tournamentGetParticipants [name] - Show everyone that information. Requires: + % @ &');
+			matched = true;
+			socket.emit('console', '/tourGetParticipants OR /tournamentGetParticipants [name] - Get the participants of the tournament named [name].');
+			socket.emit('console', '!tourGetParticipants OR !tournamentGetParticipants [name] - Show everyone that information. Requires: + % @ &');
 		}
 		if (target === 'all' || target === 'tournaments' || target === 'tour' || target === 'tournament' || target === 'starttour' || target === 'starttournament')
 		{
-		    matched = true;
-		    socket.emit('console', '/tour OR /tournament OR /startTour OR /startTournament [name], [metagame], [maximum participants] - Starts a new tournament. Requires: + % @ &');
+			matched = true;
+			socket.emit('console', '/tour OR /tournament OR /startTour OR /startTournament [name], [metagame], [maximum participants] - Starts a new tournament. Requires: + % @ &');
 		}
 		if (target === 'all' || target === 'tournaments' || target === 'join' || target === 'jointournament')
 		{
-		    matched = true;
-		    socket.emit('console', '/join OR /joinTournament [name] - Join the tournament named [name].');
+			matched = true;
+			socket.emit('console', '/join OR /joinTournament [name] - Join the tournament named [name].');
 		}
 		if (target === 'all' || target === 'tournaments' || target === 'leave' || target === 'leavetournament')
 		{
-		    matched = true;
-		    socket.emit('console', '/leave OR /leaveTournament [name] - Leave the tournament named [name].');
+			matched = true;
+			socket.emit('console', '/leave OR /leaveTournament [name] - Leave the tournament named [name].');
 		}
 		if (target === 'all' || target === 'tournaments' || target === 'tourkick' || target === 'tournamentkick')
 		{
-		    matched = true;
-		    socket.emit('console', '/tourKick OR /tournamentKick [name], [user] - Kick [user] from the tournament named [name]. Requires: + % @ &');
+			matched = true;
+			socket.emit('console', '/tourKick OR /tournamentKick [name], [user] - Kick [user] from the tournament named [name]. Requires: + % @ &');
 		}
 		if (target === 'all' || target === 'tournaments' || target === 'tourforcejoin' || target === 'tournamentforcejoin')
 		{
-		    matched = true;
-		    socket.emit('console', '/tourForceJoin OR /tournamentForceJoin [name], [user] - Forces [user] to join the tournament named [name]. Requires: + % @ &');
+			matched = true;
+			socket.emit('console', '/tourForceJoin OR /tournamentForceJoin [name], [user] - Forces [user] to join the tournament named [name]. Requires: + % @ &');
 		}
 		if (target === 'all' || target === 'tournaments' || target === 'tourgettree' || target === 'tournamentgettree')
 		{
-		    matched = true;
-		    socket.emit('console', '/tourGetTree OR /tournamentGetTree [name] - Gets the current tree for the tournament named [name]');
+			matched = true;
+			socket.emit('console', '/tourGetTree OR /tournamentGetTree [name] - Gets the current tree for the tournament named [name]');
 		}
 		if (target === 'all' || target === 'tournaments' || target === 'toursetsize' || target === 'tournamentsetsize')
 		{
-		    matched = true;
-		    socket.emit('console', '/tourSetSize OR /tournamentSetSize [name], [maximum participants] - Sets the maximum number of participants for tournament [name]. Requires: + % @ &');
+			matched = true;
+			socket.emit('console', '/tourSetSize OR /tournamentSetSize [name], [maximum participants] - Sets the maximum number of participants for tournament [name]. Requires: + % @ &');
 		}
 		if (target === 'all' || target === 'tournaments' || target === 'tourstartautopilot' || target === 'tournamentstartautopilot')
 		{
-		    matched = true;
-		    socket.emit('console', '/tourStartAutopilot OR /tournamentStartAutopilot [name] - Starts the autopilot for tournament [name] and locks joining and leaving it. Requires: + % @ &');
+			matched = true;
+			socket.emit('console', '/tourStartAutopilot OR /tournamentStartAutopilot [name] - Starts the autopilot for tournament [name] and locks joining and leaving it. Requires: + % @ &');
 		}
 		if (target === 'all' || target === 'tournaments' || target === 'tourstopautopilot' || target === 'tournamentstopautopilot')
 		{
-		    matched = true;
-		    socket.emit('console', '/tourStopAutopilot OR /tournamentStopAutopilot [name] - Stops the autopilot for tournament [name] but does not unlock it. Requires: + % @ &');
+			matched = true;
+			socket.emit('console', '/tourStopAutopilot OR /tournamentStopAutopilot [name] - Stops the autopilot for tournament [name] but does not unlock it. Requires: + % @ &');
 		}
 		if (target === 'all' || target === 'tournaments' || target === 'tourstartnextbattle' || target === 'tournamentstartnextbattle')
 		{
-		    matched = true;
-		    socket.emit('console', '/tourStartNextBattle OR /tournamentStartNextBattle [name] - Starts the next battle of tournament [name] and locks joining and leaving it. Requires: + % @ &');
+			matched = true;
+			socket.emit('console', '/tourStartNextBattle OR /tournamentStartNextBattle [name] - Starts the next battle of tournament [name] and locks joining and leaving it. Requires: + % @ &');
 		}
 		if (target === 'all' || target === 'tournaments' || target === 'toursetactionondraw' || target === 'tournamentsetactionondraw')
 		{
-		    matched = true;
-		    socket.emit('console', '/tourSetActionOnDraw OR /tournamentSetActionOnDraw [name], [action] - Sets the action (rematch OR bye) on a battle that draws in tournament [name] (Default: rematch). Requires: + % @ &');
+			matched = true;
+			socket.emit('console', '/tourSetActionOnDraw OR /tournamentSetActionOnDraw [name], [action] - Sets the action (rematch OR bye) on a battle that draws in tournament [name] (Default: rematch). Requires: + % @ &');
 		}
 		if (target === 'all' || target === 'tournaments' || target === 'tourgetwinner' || target === 'tournamentgetwinner')
 		{
-		    matched = true;
-		    socket.emit('console', '/tourGetWinner OR /tournamentGetWinner [name] - Gets the winner of the tournament named [name].');
+			matched = true;
+			socket.emit('console', '/tourGetWinner OR /tournamentGetWinner [name] - Gets the winner of the tournament named [name].');
 		}
 		if (target === 'all' || target === 'tournaments' || target === 'tourrebuildtree' || target === 'tournamentrebuildtree')
 		{
-		    matched = true;
-		    socket.emit('console', '/tourRebuildTree OR /tournamentRebuildTree [name] - Rebuilds the tournament tree for tournament [name], allowing reuse of the tournament without adding or removing users. Requires: + % @ &');
+			matched = true;
+			socket.emit('console', '/tourRebuildTree OR /tournamentRebuildTree [name] - Rebuilds the tournament tree for tournament [name], allowing reuse of the tournament without adding or removing users. Requires: + % @ &');
 		}
 		if (target === 'all' || target === 'tournaments' || target === 'deletetour' || target === 'deletetournament' || target === 'endtour' || target === 'endtournament')
 		{
-		    matched = true;
-		    socket.emit('console', '/deleteTour OR /deleteTournament OR /endTour OR /endTournament [name] - Deletes the tournament named [name]. Requires: + % @ &');
+			matched = true;
+			socket.emit('console', '/deleteTour OR /deleteTournament OR /endTour OR /endTournament [name] - Deletes the tournament named [name]. Requires: + % @ &');
 		}
 		if (target === '%' || target === 'altcheck' || target === 'alt' || target === 'alts' || target === 'getalts')
 		{
@@ -2082,11 +2079,11 @@ function splitTarget(target)
 
 function splitArgs(args)
 {
-    args = args.replace(/\s+/gm, " "); // Normalise spaces
-    var result = args.split(',');
-    for (var r in result)
-        result[r] = result[r].trim();
-    return result;
+	args = args.replace(/\s+/gm, " "); // Normalise spaces
+	var result = args.split(',');
+	for (var r in result)
+		result[r] = result[r].trim();
+	return result;
 }
 
 exports.parseCommand = parseCommandLocal;
