@@ -406,7 +406,7 @@ function Tournament(name, metagame, rooms, lobby, maxParticipants)
             this.setBattleWinner_(battleId, winner);
             this.currentBattles_[battleId] = undefined;
         }
-        this.finishedBattleScores_[battleId] = { a: rooms[battle.roomId].battle.allySide.pokemonLeft, b: rooms[battle.roomId].battle.foeSide.pokemonLeft };
+        this.finishedBattleScores_[battleId] = { a: rooms[battle.roomId].battle.p1.pokemonLeft, b: rooms[battle.roomId].battle.p2.pokemonLeft };
     }
 
     this.setActionOnDraw = function(action, errorSocket)
