@@ -133,14 +133,9 @@ function User(name, person, token) {
 		return (selfP.group === '!' || selfP.group === '&' || selfP.group === '@' || selfP.group === '%' /* || selfP.group === '+' */ );
 	};
 	this.canMod = function(group) {
-<<<<<<< HEAD
-		switch (selfP.group)
-		{
+		switch (selfP.group) {
 		case '!':
 		    return true;
-=======
-		switch (selfP.group) {
->>>>>>> tournaments
 		case '&':
 			return (group !== '!');
 			break;
