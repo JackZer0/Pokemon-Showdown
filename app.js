@@ -647,7 +647,7 @@ function Room(roomid, format, p1, p2, parentid, rated, tournament){
 	};
 	this.chat = function(user, message, socket) {
 		var cmd = '', target = '';
-		if (message.length > 511 && user.group !== '&') {
+		if (message.length > 511 && !user.can('ignorelimits')) {
 			socket.emit('message', "Your message is too long:\n\n"+message);
 			return;
 		}
@@ -701,7 +701,7 @@ function Room(roomid, format, p1, p2, parentid, rated, tournament){
 				}
 			}
 			selfR.battle.add('chat', user.name, '>> '+cmd);
-			if (user.group === '&') {
+			if (user.can('console')) {
 				try {
 					selfR.battle.add('chat', user.name, '<< '+eval(cmd));
 				} catch (e) {
@@ -712,7 +712,7 @@ function Room(roomid, format, p1, p2, parentid, rated, tournament){
 					}
 				}
 			} else {
-				selfR.battle.add('chat', user.name, '<< Access denied. To use the developer console, you must be: &');
+				selfR.battle.add('chat', user.name, '<< Access denied.');
 			}
 		} else {
 			selfR.battle.add('chat', user.name, message);
@@ -1080,7 +1080,7 @@ function Lobby(roomid) {
 	this.isFull = function() { return false; };
 	this.chat = function(user, message, socket) {
 		if (!user.named || !message || !message.trim || !message.trim().length) return;
-		if (message.length > 255 && user.group !== '&') {
+		if (message.length > 255 && !user.can('ignorelimits')) {
 			socket.emit('message', "Your message is too long:\n\n"+message);
 			return;
 		}
@@ -1120,7 +1120,7 @@ function Lobby(roomid) {
 				name: user.getIdentity(),
 				message: '>> '+cmd
 			});
-			if (user.group === '&') {
+			if (user.can('console')) {
 				try {
 					selfR.log.push({
 						name: user.getIdentity(),
@@ -1139,7 +1139,7 @@ function Lobby(roomid) {
 			} else {
 				selfR.log.push({
 					name: user.getIdentity(),
-					message: '<< Access denied. To use the developer console, you must be: &'
+					message: '<< Access denied.'
 				});
 			}
 		} else if (!user.muted) {
@@ -1200,7 +1200,7 @@ if (config.crashguard) {
 		var stack = (""+err.stack).split("\n").slice(0,2).join("<br />");
 		lobby.addRaw('<div style="background-color:#BB6655;color:white;padding:2px 4px"><b>THE SERVER HAS CRASHED:</b> '+stack+'<br />Please restart the server.</div>');
 		lobby.addRaw('<div style="background-color:#BB6655;color:white;padding:2px 4px">You will not be able to talk in the lobby or start new battles until the server restarts.</div>');
-		config.modchat = '&&';
+		config.modchat = 'crash';
 		lockdown = true;
 	});
 }
