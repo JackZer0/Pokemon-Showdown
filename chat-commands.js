@@ -842,7 +842,7 @@ function parseCommandLocal(user, cmd, target, room, socket, message) {
 
 	case 'tourforcejoin':
 	case 'tournamentforcejoin':
-		if (user.can("modtournament"))
+		if (!user.can("modtournament"))
 		{
 			socket.emit('console', "/" + cmd + " - Access denied.");
 			return false;
