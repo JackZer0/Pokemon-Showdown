@@ -666,7 +666,12 @@ function parseCommandLocal(user, cmd, target, room, socket, message) {
 			return false;
 		}
 		socket.emit('console', 'Running git pull...');
-		var git = require("child_process").spawn('git', ['pull']);
+		var git;
+		if (process.platform === 'win32') {
+			git = require("child_process").spawn('C:/Program Files/Git/bin/git.exe', ['pull']);
+		} else {
+			git = require("child_process").spawn('git', ['pull']);
+		}
 		git.stdout.on('data', function(data) {
 			socket.emit('console', 'stdout: ' + data);
 		});
