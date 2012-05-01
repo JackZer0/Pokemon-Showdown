@@ -1186,6 +1186,8 @@ mutedIps = {
 };
 bannedIps = {
 };
+nameLockedIps = {
+};
 
 function resolveUser(you, socket) {
 	if (!you) {

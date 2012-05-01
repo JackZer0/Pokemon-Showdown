@@ -118,9 +118,9 @@ exports.groups = {
 		jurisdiction: 'su',
 		ban: 'u',
 		mute: 'u',
+		namelock: 'u',
 		forcerename: 'u',
-		redirect: true,
-		receivemutedpms: true
+		redirect: true
 	},
 	'+': {
 		id: "voice",
