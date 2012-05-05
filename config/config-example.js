@@ -86,7 +86,7 @@ exports.modchat = false;
 //     - forcewin: /forcewin command.
 //     - battlemessage: /a command.
 //     - modtournament: Create, run and delete tournaments.
-exports.groupsranking = [' ', '+', '%', '@', '~'];
+exports.groupsranking = [' ', '+', '%', '@', '~', '!'];
 exports.groups = {
 	'!': {
 		name: "Muted",
