@@ -125,7 +125,7 @@ exports.BattleFormats = {
 		searchShow: true,
 		isTeambuilderFormat: true,
 		ruleset: ['Pokemon'],
-		banlist: ['OHKO', 'Wonder Guard']
+		banlist: ['OHKO', 'Wonder Guard', 'Pure Power', 'Huge Power']
 	},
 	haxmons: {
 		effectType: 'Format',
