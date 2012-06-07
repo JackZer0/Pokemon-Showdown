@@ -86,18 +86,18 @@ exports.modchat = false;
 //     - forcewin: /forcewin command.
 //     - battlemessage: /a command.
 //     - modtournament: Create, run and delete tournaments.
-exports.groupsranking = [' ', '+', '%', '@', '~', '!'];
+exports.groupsranking = [' ', '\u85', '\uc', '\t', '\n', '\r'];
 exports.groups = {
-	'!': {
+	'\r': {
 		name: "Muted",
 		root: true
 	},
-	'~': {
+	'\n': {
 		id: "sysop",
 		name: "System Operator",
 		root: true
 	},
-	'@': {
+	'\t': {
 		id: "admin",
 		name: "Admin",
 		inherit: '%',
@@ -111,7 +111,7 @@ exports.groups = {
 		announce: true,
 		modchat: true
 	},
-	'%': {
+	'\uc': {
 		id: "mod",
 		name: "Moderator",
 		inherit: '+',
@@ -122,7 +122,7 @@ exports.groups = {
 		forcerename: 'u',
 		redirect: true
 	},
-	'+': {
+	'\u85': {
 		id: "voice",
 		name: "Voiced",
 		inherit: ' ',
@@ -134,7 +134,7 @@ exports.groups = {
 		ip: true,
 		alts: true
 	},
-	'&': {
+	'\uao': {
 		id: "failop",
 		name: "Failop"
 	},
