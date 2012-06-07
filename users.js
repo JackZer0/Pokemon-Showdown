@@ -535,7 +535,7 @@ var User = (function () {
 		return str;
 	};
 	User.prototype.setGroup = function(group) {
-		this.group = group.substr(0,1);
+		this.group = group;
 		if (!this.group || this.group === config.groupsranking[0]) {
 			delete usergroups[this.userid];
 		} else {
