@@ -157,12 +157,7 @@ var User = (function () {
 		}
 	};
 	User.prototype.getIdentity = function() {
-		if (this.muted) {
-			return '!'+this.name;
-		} if(this.nameLocked()) {
-			return '#'+this.name;
-		}
-		return this.group+this.name;
+		return ' '+this.name;
 	};
 	User.prototype.can = function(permission, target) {
 		var group = this.group;
