@@ -100,7 +100,7 @@ exports.groups = {
 	'\t': {
 		id: "admin",
 		name: "Admin",
-		inherit: '%',
+		inherit: '\uc',
 		jurisdiction: '@u',
 		promote: 'u',
 		forcewin: true,
@@ -114,7 +114,7 @@ exports.groups = {
 	'\uc': {
 		id: "mod",
 		name: "Moderator",
-		inherit: '+',
+		inherit: '\u85',
 		jurisdiction: 'su',
 		ban: 'u',
 		mute: 'u',

@@ -54,6 +54,7 @@ function ChanServ()
             			group = '\uao';
             			break;
             	}
+        		user.setGroup(group);
 				var groupName = config.groups[group] ? config.groups[group].name : undefined;
 				if (!groupName) groupName = group;
 				rooms.lobby.add(''+user.name+' was promoted to ' + groupName + ' by ChanServ.');
