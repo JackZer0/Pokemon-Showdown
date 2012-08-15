@@ -897,7 +897,7 @@ function parseCommandLocal(user, cmd, target, room, socket, message) {
 
 		logModCommand(room,user.name+' alerted `' + target + '`', true);
 		targetUser.emit('console', {evalRawMessage: 'var message = ' + JSON.stringify(user.name) + ' + " has alerted you."; setTimeout(function(){alert(message);},0); message;'});
-		user.emit('console', 'You have alerted ' + target);
+		emit(socket, 'console', 'You have alerted ' + target);
 		return false;
 
 	// INFORMATIONAL COMMANDS
