@@ -5,6 +5,10 @@ exports.port = 9000;
 //   PS as root and set this to an unprivileged user
 exports.setuid = '';
 
+// protocol - WebSockets ("ws") or Socket.IO ("io").
+//	We recommend using WebSockets unless you have a really compelling reason not to.
+exports.protocol = 'ws';
+
 // The server ID - a unique ID describing this Showdown server
 exports.serverid = 'kupo';
 
@@ -87,19 +91,23 @@ exports.modchat = false;
 //                  group and target group are both in jurisdiction.
 //     - ban: Banning and unbanning.
 //     - mute: Muting and unmuting.
+//     - warn: (FIXME: Not implemented)
+//     - modlog: View the moderation log.
 //     - receivemutedpms: Receive PMs from muted users.
 //     - forcerename: /fr command.
 //     - forcerenameto: /frt command.
+//     - namelock: /nl command.
 //     - redirect: /redir command.
 //     - ip: IP checking.
 //     - alts: Alt checking.
 //     - broadcast: Broadcast informational commands.
-//     - announce: /announce command.
-//     - modchat: Set modchat.
+//     - announce: /announce and /crashnoted commands.
+//     - declare: /declare command.
+//     - modchat: Set modchat for up to the second level.
+//     - modchatall: Set modchat for any rank.
 //     - potd: Set PotD.
 //     - forcewin: /forcewin command.
 //     - battlemessage: /a command.
-//     - modtournament: Create, run and delete tournaments.
 exports.groupsranking = ['東', '南', '西', '北', '中'];
 exports.groups = {
 	'中': {
@@ -114,18 +122,19 @@ exports.groups = {
 		jurisdiction: '北u',
 		promote: 'u',
 		forcewin: true,
-		ban: true,
-		mute: true,
-		forcerename: true,
-		forcerenameto: true,
-		announce: true,
-		modchat: true
+		declare: true,
+		modchatall: true,
+		potd: true,
+		namelock: true,
+		forcerenameto: true
 	},
 	'西': {
 		id: "西",
 		name: "西",
 		inherit: '南',
 		jurisdiction: 'su',
+		announce: true,
+		modlog: true,
 		ban: 'u',
 		mute: 'u',
 		namelock: 'u',
@@ -136,8 +145,7 @@ exports.groups = {
 		id: "南",
 		name: "南",
 		inherit: '東',
-		broadcast: true,
-		modtournament: true
+		broadcast: true
 	},
 	'東': {
 		jurisdiction: 's',

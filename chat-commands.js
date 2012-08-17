@@ -451,7 +451,7 @@ function parseCommandLocal(user, cmd, target, room, socket, message) {
 		break;
 
 	case 'unbanall':
-		if (user.can('ban')) {
+		if (!user.can('ban')) {
 			emit(socket, 'console', '/unbanall - Access denied.');
 			return false;
 		}
@@ -673,6 +673,10 @@ function parseCommandLocal(user, cmd, target, room, socket, message) {
 				emit(socket, 'console', 'That moderated chat setting is unrecognized.');
 				return false;
 			}
+			if (config.groupsranking.indexOf(target) > 1 && !user.can('modchatall')) {
+				emit(socket, 'console', '/modchat - Access denied for setting higher than ' + config.groupsranking[1] + '.');
+				return false;
+			}
 			config.modchat = target;
 			break;
 		}
@@ -687,11 +691,10 @@ function parseCommandLocal(user, cmd, target, room, socket, message) {
 		logModCommand(room,user.name+' set modchat to '+config.modchat,true);
 		return false;
 		break;
-	
+
 	case 'declare':
         if (!target) return parseCommand(user, '?', cmd, room, socket);
-        // announce is used because leaders and up can already announce and i didn't want to try and mess with permissions
-        if (!user.can('announce')) {
+        if (!user.can('declare')) {
                 emit(socket, 'console', '/declare - Access denied.');
                 return false;
         }
@@ -700,12 +703,11 @@ function parseCommandLocal(user, cmd, target, room, socket, message) {
         logModCommand(room,user.name+' declared '+target,true);
         return false;
         break;
- 
+
 	case 'announce':
 	case 'wall':
         if (!target) return parseCommand(user, '?', cmd, room, socket);
-        // mute is used because drivers and up can already mute and i didn't want to try and mess with permissions
-        if (!user.can('mute')) {
+        if (!user.can('announce')) {
                 emit(socket, 'console', '/announce - Access denied.');
                 return false;
         }
@@ -1316,7 +1318,7 @@ function parseCommandLocal(user, cmd, target, room, socket, message) {
 		return false;
 		break;
 	case 'modlog':
-		if (!user.can('mute')) {
+		if (!user.can('modlog')) {
 			emit(socket, 'console', '/modlog - Access denied.');
 			return false;
 		}
@@ -1635,7 +1637,7 @@ function showOrBroadcastStart(user, cmd, room, socket, message) {
 
 function showOrBroadcast(user, cmd, room, socket, rawMessage) {
 	if (cmd.substr(0,1) !== '!') {
-		emit(socket, 'console', {rawMessage: rawMessage, room: room.id});
+		sendData(socket, '>'+room.id+'\n|raw|'+rawMessage);
 	} else if (user.can('broadcast') && canTalk(user, room)) {
 		room.addRaw(rawMessage);
 	}
