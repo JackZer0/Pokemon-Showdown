@@ -5,6 +5,10 @@ exports.port = 8000;
 //   PS as root and set this to an unprivileged user
 exports.setuid = '';
 
+// protocol - WebSockets ("ws") or Socket.IO ("io").
+//	We recommend using WebSockets unless you have a really compelling reason not to.
+exports.protocol = 'ws';
+
 // The server ID - a unique ID describing this Showdown server
 exports.serverid = 'testserver';
 
@@ -61,10 +65,6 @@ exports.reportbattles = true;
 //   huge influxes of spammy users.
 exports.modchat = false;
 
-// protocol - WebSockets ("ws") or Socket.IO ("io").
-//	We recommend using WebSockets unless you have a really compelling reason not to.
-exports.protocol = 'ws';
-
 // permissions and groups:
 //   Each entry in `groupsranking' specifies the ranking of the groups.
 //   Each entry in `groups' is a seperate group. Some of the members are "special"
@@ -91,59 +91,73 @@ exports.protocol = 'ws';
 //                  group and target group are both in jurisdiction.
 //     - ban: Banning and unbanning.
 //     - mute: Muting and unmuting.
-//     - receivemutedpms: Receive PMs from muted users.
+//     - warn: (FIXME: Not implemented)
+//     - modlog: View the moderation log.
 //     - forcerename: /fr command.
 //     - forcerenameto: /frt command.
+//     - namelock: /nl command.
 //     - redirect: /redir command.
 //     - ip: IP checking.
 //     - alts: Alt checking.
 //     - broadcast: Broadcast informational commands.
-//     - announce: /announce command.
-//     - modchat: Set modchat.
+//     - announce: /announce and /crashnoted commands.
+//     - declare: /declare command.
+//     - modchat: Set modchat for up to the second level.
+//     - modchatall: Set modchat for any rank.
 //     - potd: Set PotD.
 //     - forcewin: /forcewin command.
 //     - battlemessage: /a command.
-exports.groupsranking = [' ', '+', '%', '@', '&'];
+exports.groupsranking = [' ', '+', '%', '@', '&', '~'];
 exports.groups = {
-	'&': {
-		id: "sysop",
-		name: "System Operator",
+	'~': {
+		id: "admin",
+		name: "Administrator",
 		root: true
 	},
-	'@': {
-		id: "admin",
-		name: "Admin",
-		inherit: '%',
+	'&': {
+		id: "leader",
+		name: "Leader",
+		inherit: '@',
 		jurisdiction: '@u',
 		promote: 'u',
 		forcewin: true,
-		ban: true,
-		mute: true,
-		forcerename: true,
-		forcerenameto: true,
-		announce: true,
-		modchat: true
+		declare: true,
+		modchatall: true,
+		potd: true,
+		namelock: true,
+		forcerenameto: true
 	},
-	'%': {
+	'@': {
 		id: "mod",
 		name: "Moderator",
+		inherit: '%',
+		jurisdiction: 'u',
+		ban: true,
+		modchat: true,
+		redirect: true,
+		forcerename: true,
+		ip: true,
+		alts: '@u'
+	},
+	'%': {
+		id: "driver",
+		name: "Driver",
 		inherit: '+',
-		jurisdiction: 'su',
-		ban: 'u',
-		mute: 'u',
-		namelock: 'u',
-		forcerename: 'u',
-		redirect: true
+		jurisdiction: 'u',
+		announce: true,
+		warn: true,
+		mute: true,
+		modlog: true,
+		forcerename: true
 	},
 	'+': {
 		id: "voice",
-		name: "Voiced",
+		name: "Voice",
 		inherit: ' ',
 		broadcast: true
 	},
 	' ': {
-		jurisdiction: 's',
-		ip: true,
-		alts: true
+		ip: 's',
+		alts: 's'
 	}
 };
