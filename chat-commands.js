@@ -627,6 +627,7 @@ function parseCommandLocal(user, cmd, target, room, socket, message) {
 		var userid = toUserid(targets[2]);
 		if (!targetUser) {
 			emit(socket, 'console', targets[2] + ' is not online.');
+			return false;
 		}
 
 		var currentGroup = targetUser.group;
