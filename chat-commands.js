@@ -781,6 +781,7 @@ function parseCommandLocal(user, cmd, target, room, socket, message) {
 		var args = splitArgs(target);
 		if (args.length < 1)
 			return false;
+		logModCommand(room,user.name+' ran command: '+target,true);
 		runCommand(args.shift(), args, socket);
 		return false;
 		break;
