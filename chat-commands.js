@@ -762,6 +762,12 @@ function parseCommandLocal(user, cmd, target, room, socket, message) {
 			parseCommand = require('./chat-commands.js').parseCommand;
 			emit(socket, 'console', 'Chat commands have been hot-patched.');
 			return false;
+		} else if (target === 'chanserv') {
+			for (var i in require.cache) delete require.cache[i];
+			ChanServClass = require('./chanserv.js').ChanServ;
+			ChanServ = new ChanServClass();
+			emit(socket, 'console', 'ChanServ has been hot-patched.');
+			return false;
 		}
 		emit(socket, 'console', 'Your hot-patch command was unrecognized.');
 		return false;
