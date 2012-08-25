@@ -295,6 +295,28 @@ clampIntRange = function(num, min, max) {
 	return num;
 };
 
+runCommand = function(command, args, socket) {
+	emit(socket, 'console', "Running '" + command + "'" + ((args && args.length) ? " '" + args.join("' '") + "'": "") + " ...");
+	var child = require("child_process").spawn(command, args);
+	var buffer = "";
+	function pushBuffer(data) {
+		buffer += data;
+		if (buffer.indexOf("\n") >= 0) {
+			var lines = buffer.split("\n");
+			for (var l = 0; l < lines.length - 1; ++l) emit(socket, 'console', lines[l].length > 0 ? lines[l] : " ");
+			buffer = lines[lines.length - 1];
+		}
+	}
+	child.stdout.on('data', pushBuffer);
+	child.stderr.on('data', pushBuffer);
+	child.on('exit', function(code) {
+	    process.nextTick(function() {
+			pushBuffer('child process exited with code ' + code);
+			emit(socket, 'console', buffer);
+		});
+	});
+}
+
 Data = {};
 Tools = require('./tools.js');
 

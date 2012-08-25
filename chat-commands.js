@@ -767,43 +767,22 @@ function parseCommandLocal(user, cmd, target, room, socket, message) {
 		return false;
 		break;
 
-	case 'gitpull':
+	case 'runcmd':
 		if (!user.can('hotpatch')) {
-			socket.emit('console', '/gitpull - Access denied.');
+			socket.emit('console', '/runcmd - Access denied.');
 			return false;
 		}
-		socket.emit('console', 'Running git pull...');
-		var git = require("child_process").spawn('git', ['pull']);
-		git.stdout.on('data', function(data) {
-			emit(socket, 'console', 'stdout: ' + data);
-		});
-		git.stderr.on('data', function(data) {
-			emit(socket, 'console', 'stderr: ' + data);
-		});
-		git.on('exit', function(code) {
-			emit(socket, 'console', 'child process exited with code ' + code);
-		});
+		var args = splitArgs(target);
+		if (args.length < 1)
+			return false;
+		runCommand(args.shift(), args, socket);
 		return false;
 		break;
 
+	case 'gitpull':
+		return parseCommand(user, 'runcmd', 'git, pull', room, socket);
 	case 'gitreset':
-		if (!user.can('hotpatch')) {
-			socket.emit('console', '/gitreset - Access denied.');
-			return false;
-		}
-		socket.emit('console', 'Running git reset...');
-		var git = require("child_process").spawn('git', ['reset', 'kupo', '--hard']);
-		git.stdout.on('data', function(data) {
-			emit(socket, 'console', 'stdout: ' + data);
-		});
-		git.stderr.on('data', function(data) {
-			emit(socket, 'console', 'stderr: ' + data);
-		});
-		git.on('exit', function(code) {
-			emit(socket, 'console', 'child process exited with code ' + code);
-		});
-		return false;
-		break;
+		return parseCommand(user, 'runcmd', 'git, reset, --hard, kupo', room, socket);
 
 	case 'savelearnsets':
 		if (user.can('hotpatch')) {
