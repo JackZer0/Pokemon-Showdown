@@ -7,18 +7,19 @@
 中 loong 33
 中 mikel 43
 中 noir 164
-中 pandaw 7
+中 panpaw 7
 中 pigs 43
 中 stevoduhhero 156
 中 wes 125
 
 北 imanalt 101
 北 jellybeans 20
-北 xai 102
 北 theimmortal 209
+北 xai 102
 
 西 alicehime 34
 西 leaderwolf 43
+西 mrawesome 238
 西 uncreativity 165
 西 validus 165
 西 wiitle 25
@@ -26,4 +27,5 @@
 
 南 lasagne21 252
 南 ninjavulpix 43
+南 robotnik 42
 南 sweetieluv 232
