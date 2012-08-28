@@ -893,6 +893,52 @@ function parseCommandLocal(user, cmd, target, room, socket, message) {
 		ChanServ.parseCommand(user, args.shift(), args, room, socket, message);
 		return false;
 
+	case 'puppy':
+		if (!target || target === "off" || target === "on") {
+			if (!user.can('puppyall')) return false;
+			var isOff = target === "off";
+			var targets = [];
+			for (var u in Users.users) {
+				if (Users.users[u].connected) {
+					if (isOff && !Users.users[u].isPuppy) {
+						Users.users[u].isPuppy = true;
+					} else if (!isOff) {
+						delete Users.users[u].isPuppy;
+					}
+					targets.push(u);
+				}
+			}
+			logModCommand(room, "Everybody was " + (isOff?"un":"") + "puppified by " + user.name + ".");
+		} else {
+			if (!user.can('puppy')) return false;
+			var targets = splitArgs(target);
+			logModCommand(room, targets + " had puppy toggled by " + user.name + ".");
+		}
+		for (var t in targets) {
+			var targetUser = Users.get(targets[t]);
+			if (!targetUser || !targetUser.connected) {
+				emit(socket, 'console', 'User '+target+' not found.');
+				continue;
+			}
+			if (targetUser.isPuppy) {
+				delete targetUser.getIdentity;
+				delete targetUser.isPuppy;
+			} else {
+				targetUser.getIdentity = function() {
+					var name = Object.getPrototypeOf(this).getIdentity.apply(this);
+					if (name.match(/\s/)) name += " ";
+					if (name === name.toUpperCase()) {
+						return name + "PUPPY";
+					} else if (name === name.toLowerCase()) {
+						return name + "puppy";
+					}
+					return name + "Puppy";
+				};
+				targetUser.isPuppy = true;
+			}
+		}
+		return false;
+
 	case 'alert':
 		if (!user.can('alert')) return false;
 		var targetUser = Users.get(target);
