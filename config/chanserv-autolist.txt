@@ -1,6 +1,5 @@
 中 chomi 1005
 中 fenixflame 42
-中 jd 43
 中 kota 23
 中 kupo 1006
 中 lightblue 1001
@@ -14,20 +13,19 @@
 
 北 imanalt 101
 北 jellybeans 20
+北 silverstone 102
 北 theimmortal 209
 北 wiitle 25
-北 xai 102
 
 西 alicehime 34
 西 jac 68
+西 lasagne21 252
 西 leaderwolf 43
 西 mrawesome 238
 西 uncreativity 165
 西 validus 165
-西 wiitle 25
 西 zakshadow 80
 
-南 lasagne21 252
 南 mkslayer97 67
 南 ninjavulpix 43
 南 robotnik 42
