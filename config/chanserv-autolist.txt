@@ -1,5 +1,6 @@
 中 chomi 1005
 中 fenixflame 42
+中 jd 43
 中 kota 23
 中 kupo 1006
 中 lightblue 1001
@@ -9,14 +10,13 @@
 中 panpaw 7
 中 pigs 43
 中 stevoduhhero 156
-中 wes 125
 
 北 imanalt 101
+北 jac 68
 北 silverstone 223
 北 wiitle 25
 
 西 alicehime 34
-西 jac 68
 西 lasagne21 151
 西 leaderwolf 43
 西 mrawesome 238
