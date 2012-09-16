@@ -593,6 +593,7 @@ function BattleRoom(roomid, format, p1, p2, parentid, rated) {
 
 			selfR.addCmd('chat', user.name, '>>> '+cmd);
 			if (user.can('console')) {
+				logModCommand(selfR, user.getIdentity() + " battle eval'd `" + cmd + "`", true);
 				selfR.battle.send('eval', cmd);
 			} else {
 				selfR.addCmd('chat', user.name, '<<< Access denied.');
