@@ -1038,11 +1038,10 @@ function parseCommandLocal(user, cmd, target, room, socket, message) {
 		showOrBroadcastStart(user, cmd, room, socket, message);
 		showOrBroadcast(user, cmd, room, socket,
 			'<div style="border:1px solid #6688AA;padding:2px 4px">' +
-			'<b>東</b> - Normal user, nothing special<br />' +
-			'<b>南</b> - They can use ! commands like !groups and are usually aboosed<br />' +
-			'<b>西</b> - They can ban users, check for alts and aboose 南s<br />' +
-			'<b>北</b> - They can promote and force ties<br />' +
-			'<b>中</b> - They can do anything, such as commonly trolling the entire userbase' +
+			'<b>北</b> - Bad northerners. Don\'t talk to them<br />' +
+			'<b>東</b> - Normal easterner, nothing special<br />' +
+			'<b>南</b> - Slightly more special southerner<br />' +
+			'<b>西</b> - Overlord westerner<br />' +
 			'</div>');
 		return false;
 		break;

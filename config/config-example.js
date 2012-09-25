@@ -107,44 +107,35 @@ exports.modchat = false;
 //     - potd: Set PotD.
 //     - forcewin: /forcewin command.
 //     - battlemessage: /a command.
-exports.groupsranking = ['東', '南', '西', '北', '中'];
+exports.groupsranking = ['東', '南', '西', '北'];
 exports.groups = {
-	'中': {
-		id: "中",
-		name: "中",
-		root: true
-	},
 	'北': {
 		id: "北",
 		name: "北",
-		inherit: '西',
-		jurisdiction: '北u',
-		promote: 'u',
-		forcewin: true,
-		declare: true,
-		modchatall: true,
-		potd: true,
-		namelock: true,
-		forcerenameto: true
+		root: true
 	},
 	'西': {
 		id: "西",
 		name: "西",
 		inherit: '南',
-		jurisdiction: 'su',
-		announce: true,
-		modlog: true,
-		ban: 'u',
-		mute: 'u',
-		namelock: 'u',
-		forcerename: 'u',
+		jurisdiction: '西u',
+		ban: 'true',
+		namelock: 'true',
+		forcerename: 'true',
+		forcerenameto: true,
 		redirect: true
 	},
 	'南': {
 		id: "南",
 		name: "南",
 		inherit: '東',
-		broadcast: true
+		broadcast: true,
+		announce: true,
+		modlog: true,
+		modchatall: true,
+		mute: 'true',
+		potd: 'true',
+		ignorelimits: 'true'
 	},
 	'東': {
 		jurisdiction: 's',
