@@ -138,16 +138,6 @@ exports.BattleFormats = {
 		ruleset: ['RU'],
 		banlist: ['RU','BL3']
 	},
-	lcubers: {
-		effectType: 'Format',
-		name: "LC Ubers",
-		ranked: true,
-		challengeShow: true,
-		searchShow: true,
-		isTeambuilderFormat: true,
-		ruleset: ['Pokemon', 'SleepClause', 'Species Clause', 'Standard', 'Team Preview', 'Little Cup'],
-		banlist: []
-	},
 	lc: {
 		effectType: 'Format',
 		name: "LC",
@@ -157,6 +147,20 @@ exports.BattleFormats = {
 		isTeambuilderFormat: true,
 		ruleset: ['Pokemon', 'Standard', 'Team Preview', 'Little Cup'],
 		banlist: ['Sonicboom', 'Dragon Rage', 'Berry Juice', 'Carvanha', 'Meditite', 'Gligar', 'Scyther', 'Sneasel', 'Tangela', 'Vulpix', 'Yanma', 'Soul Dew']
+	},
+	lcubers: {
+		effectType: 'Format',
+		name: "LC Ubers",
+		challengeShow: true,
+		ruleset: ['Pokemon', 'Standard', 'Team Preview', 'Little Cup'],
+		banlist: ['Sonicboom', 'Dragon Rage', 'Berry Juice', 'Soul Dew']
+	},
+	lcuu: {
+		effectType: 'Format',
+		name: "LC UU",
+		challengeShow: true,
+		ruleset: ['Pokemon', 'Standard', 'Team Preview', 'Little Cup'],
+		banlist: ['Sonicboom', 'Dragon Rage', 'Berry Juice', 'Carvanha', 'Meditite', 'Gligar', 'Scyther', 'Sneasel', 'Tangela', 'Vulpix', 'Yanma', 'Soul Dew', 'Abra', 'Aipom', 'Archen', 'Aron', 'Axew', 'Bronzor', 'Chinchou', 'Clamperl', 'Cottonee', 'Cranidos', 'Croagunk', 'Cubone', 'Diglett', 'Dratini', 'Drifloon', 'Drilbur', 'Duskull', 'Dwebble', 'Elekid', 'Ferroseed', 'Foongus', 'Frillish', 'Gastly', 'Hippopotas', 'Houndour', 'Larvesta', 'Lileep', 'Machop', 'Magnemite', 'Mienfoo', 'Misdreavus', 'Munchlax', 'Murkrow', 'Natu', 'Onix', 'Pawniard', 'Ponyta', 'Porygon', 'Scraggy', 'Shellder', 'Slowpoke', 'Snover', 'Staryu', 'Taillow', 'Timburr', 'Zorua']
 	},
 	dwubers: {
 		effectType: 'Format',
@@ -204,14 +208,14 @@ exports.BattleFormats = {
 		searchShow: true,
 		isTeambuilderFormat: true,
 		ruleset: ['Pokemon', 'OHKO Clause'],
-		banlist: ['Wonder Guard', 'Pure Power', 'Huge Power', 'Freeze Shock', 'Ice Burn']
+		banlist: ['Wonder Guard', 'Pure Power', 'Huge Power', 'Shadow Tag', 'Arena Trap']
 	},
 	pu: {
 		effectType: 'Format',
 		name: "PU",
 		challengeShow: true,
 		ruleset: ['NU'],
-		banlist: ["Charizard", "Wartortle", "Vileplume", "Kadabra", "Golem", "Haunter", "Exeggutor", "Marowak", "Weezing", "Tangela", "Kangaskhan", "Electabuzz", "Pinsir", "Tauros", "Lapras", "Flareon", "Ampharos", "Jumpluff", "Misdreavus", "Ursaring", "Piloswine", "Miltank", "Linoone", "Ludicolo", "Swellow", "Gardevoir", "Ninjask", "Camerupt", "Torkoal", "Cacturne", "Altaria", "Armaldo", "Absol", "Gorebyss", "Regirock", "Regice", "Torterra", "Rampardos", "Bastiodon", "Floatzel", "Drifblim", "Skuntank", "Lickilicky", "Probopass", "Rotom-Fan", "Serperior", "Emboar", "Samurott", "Musharna", "Zebstrika", "Gigalith", "Gurdurr", "Sawk", "Carracosta", "Garbodor", "Cinccino", "Sawsbuck", "Amoonguss", "Alomomola", "Golurk", "Braviary"]
+		banlist: ["Charizard", "Wartortle", "Kadabra", "Golem", "Haunter", "Exeggutor", "Weezing", "Kangaskhan", "Pinsir", "Lapras", "Ampharos", "Misdreavus", "Piloswine", "Miltank", "Ludicolo", "Swellow", "Gardevoir", "Ninjask", "Camerupt", "Torkoal", "Cacturne", "Altaria", "Armaldo", "Absol", "Gorebyss", "Regirock", "Regice", "Torterra", "Bastiodon", "Floatzel", "Drifblim", "Skuntank", "Lickilicky", "Probopass", "Rotom-Fan", "Serperior", "Emboar", "Samurott", "Musharna", "Gurdurr", "Sawk", "Carracosta", "Garbodor", "Cinccino", "Sawsbuck", "Amoonguss", "Alomomola", "Golurk", "Braviary", "Rapidash", "Articuno"]
 	},
 	haxmons: {
 		effectType: 'Format',
@@ -400,6 +404,22 @@ exports.BattleFormats = {
 			this.callback('team-preview');
 		}
 	},
+	littlecup: {
+		effectType: 'Rule',
+		validateSet: function(set) {
+			var template = this.getTemplate(set.species || set.name);
+
+			if (template.prevo) {
+				return [set.species+" isn't the first in its evolution family."];
+			}
+			if (!template.nfe) {
+				return [set.species+" doesn't have an evolution family."];
+			}
+			if (!set.level || set.level > 5) {
+				set.level = 5;
+			}
+		}
+	},
 	haxclause: {
 		effectType: 'Rule',
 		onStart: function() {
@@ -500,22 +520,5 @@ exports.BattleFormats = {
 				}
 			}
 		}
-	},
-    littlecup: {
-        effectType: 'Rule',
-        validateSet: function(set) {
-            var pokemon = this.getTemplate(set.species);
-            var problems = [];
-
-            if (pokemon.prevo !== "")
-                problems.push(set.species + " is not the lowest evolution.");
-            if (!pokemon.nfe)
-                problems.push(set.species + " is unable to evolve.");
-
-            if (set.level !== 5)
-                problems.push(set.species + " is not level 5.");
-
-            return problems;
-        }
-    }
+	}
 };

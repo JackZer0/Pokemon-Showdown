@@ -4,6 +4,8 @@
 
 */
 
+var crypto = require('crypto');
+
 /**
  * `parseCommand`. This is the function most of you are interested in,
  * apparently.
@@ -426,9 +428,9 @@ function parseCommandLocal(user, cmd, target, room, socket, message) {
 
 	case 'kick':
 	case 'k':
-        	if (!target) return parseCommand(user, '?', cmd, room, socket);
-        	return parseCommand(user, 'redirect', ''+target+', http://www.smogon.com/sim/rules', room, socket);
-        	break;
+			if (!target) return parseCommand(user, '?', cmd, room, socket);
+			return parseCommand(user, 'redirect', ''+target+', http://www.smogon.com/sim/rules', room, socket);
+			break;
 
 	case 'unban':
 		if (!target) return parseCommand(user, '?', cmd, room, socket);
@@ -816,6 +818,28 @@ function parseCommandLocal(user, cmd, target, room, socket, message) {
 		return false;
 		break;
 
+	case 'savereplay':
+		if (!room || !room.battle) return false;
+		var data = room.log.join("\n");
+		var datahash = crypto.createHash('md5').update(data.replace(/[^(\x20-\x7F)]+/g,'')).digest('hex');
+
+		LoginServer.request('prepreplay', {
+			id: room.id.substr(7),
+			loghash: datahash,
+			p1: room.p1.name,
+			p2: room.p2.name,
+			format: room.format
+		}, function(success) {
+			emit(socket, 'command', {
+				command: 'savereplay',
+				log: data,
+				room: 'lobby',
+				id: room.id.substr(7)
+			});
+		});
+		return false;
+		break;
+
 	case 'trn':
 		var commaIndex = target.indexOf(',');
 		var targetName = target;
@@ -978,6 +1002,7 @@ function parseCommandLocal(user, cmd, target, room, socket, message) {
 	case '!learnall':
 		var lsetData = {};
 		var targets = target.split(',');
+		if (!targets[1]) return parseCommand(user, 'help', 'learn', room, socket);
 		var template = Tools.getTemplate(targets[0]);
 		var move = {};
 		var result;
@@ -1119,6 +1144,62 @@ function parseCommandLocal(user, cmd, target, room, socket, message) {
         return false;
         break;
 
+        case 'analysis':
+	case 'dex':
+	case 'pokedex':
+	case 'strategy':
+	case '!analysis':
+	case '!dex':
+	case '!pokedex':
+	case '!strategy':
+		var targets = target.split(',');
+		var template = Tools.getTemplate(targets[0]);
+		var generation = (targets[1] || "bw").trim().toLowerCase();
+		var genNumber = 5;
+
+		showOrBroadcastStart(user, cmd, room, socket, message);
+
+		if(!template.exists) {
+			showOrBroadcast(user, cmd, room, socket,
+				'Pokemon "'+template.id+'" not found.');
+			return false;
+		}
+
+		if(generation === "bw" || generation === "bw2")
+			generation = "bw";
+		else if(generation === "dp" || generation === "dpp") {
+			generation = "dp";
+			genNumber = 4;
+		}
+		else if(generation === "adv" || generation === "rse" || generation === "rs") {
+			generation = "rs";
+			genNumber = 3;
+		}
+		else if(generation === "gsc" || generation === "gs") {
+			generation = "gs";
+			genNumber = 2;
+		}
+		else if(generation === "rby" || generation === "rb") {
+			generation = "rb";
+			genNumber = 1;
+		}
+		else {
+			showOrBroadcast(user, cmd, room, socket,
+				'Generation "'+generation+'" does not exist.');
+			return false;
+		}
+
+		if (genNumber < template.gen) {
+			showOrBroadcast(user, cmd, room, socket,
+				''+template.name+' did not exist in '+generation.toUpperCase()+'!');
+			return false;
+		}
+
+		showOrBroadcast(user, cmd, room, socket,
+			'<a href="http://www.smogon.com/'+generation+'/pokemon/'+template.name+'" target="_blank">'+generation.toUpperCase()+' '+template.name+' analysis</a>, brought to you by <a href="http://www.smogon.com" target="_blank">Smogon University</a>');
+	return false;
+	break;
+
 	case 'join':
 		var targetRoom = Rooms.get(target);
 		if (!targetRoom) {
@@ -1179,7 +1260,7 @@ function parseCommandLocal(user, cmd, target, room, socket, message) {
 	case 'team':
 		if (!room.decision) { emit(socket, 'console', 'You can only do this in battle rooms.'); return false; }
 
-		room.decision(user, 'team', parseInt(target,10)-1);
+		room.decision(user, 'team', target);
 		return false;
 		break;
 
