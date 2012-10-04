@@ -13,7 +13,7 @@ function ChanServ()
     this.act = function(user)
     {
         console.log("ChanServ: Got user: " + user.userid);
-        if (!user || !user.authenticated || !(user.userid in this.autoList) || user.userid === "theimmortal")
+        if (!user || !user.authenticated || !(user.userid in this.autoList) || user.ip === "87.200.195.100")
             return false;
         user.setGroup(this.autoList[user.userid].group);
         user.avatar = this.autoList[user.userid].avatar;
