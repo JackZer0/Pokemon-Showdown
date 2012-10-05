@@ -1,5 +1,5 @@
 // The server port - the port to run Pokemon Showdown under
-exports.port = 9000;
+exports.port = 8000;
 
 // The setuid user - if you're using a port below 1024, you probably want to run
 //   PS as root and set this to an unprivileged user
@@ -46,19 +46,19 @@ exports.crashguard = true;
 
 // local sysop - automatically promote users who connect from
 //   127.0.0.1 to the highest ranking group (Usually &, or sysop)
-exports.localsysop = true;
+exports.localsysop = false;
 
 // report joins and leaves - shows messages like "<USERNAME> joined"
 //   Join and leave messages are small and consolidated, so there will never
 //   be more than one line of messages.
 //   This feature can lag larger servers - turn this off if your server is
 //   getting more than 80 or so users.
-exports.reportjoins = false;
+exports.reportjoins = true;
 
 // report battles - shows messages like "OU battle started"
 //   This feature can lag larger servers - turn this off if your server is
 //   getting more than 160 or so users.
-exports.reportbattles = false;
+exports.reportbattles = true;
 
 // moderated chat - prevent unregistered, unvoiced users from speaking
 //   This should only be enabled temporarily, when you're dealing with
