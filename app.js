@@ -2,6 +2,7 @@ const LOGIN_SERVER_TIMEOUT = 10000;
 
 require('sugar');
 
+unorm = require("unorm").nfkd;
 fs = require('fs');
 if (!fs.existsSync) {
 	var path = require('path');
@@ -257,7 +258,7 @@ toId = function(text) {
 	else if (text && text.userid) text = text.userid;
 	text = string(text);
 	if (typeof text !== 'string') return ''; //???
-	return text.toLowerCase().replace(/[^a-z0-9\u4e00-\u9eff]+/g, '');
+	return unorm(text).toLowerCase().replace(/[^a-z0-9\u4e00-\u9eff]+/g, '');
 };
 toUserid = toId;
 
