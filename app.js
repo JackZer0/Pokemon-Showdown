@@ -9,6 +9,7 @@ try {
 
 require('sugar');
 
+unorm = require("unorm").nfkd;
 fs = require('fs');
 if (!fs.existsSync) {
 	var path = require('path');
@@ -262,7 +263,7 @@ toId = function(text) {
 	else if (text && text.userid) text = text.userid;
 	text = string(text);
 	if (typeof text !== 'string') return ''; //???
-	return text.toLowerCase().replace(/[^a-z0-9]+/g, '');
+	return unorm(text).toLowerCase().replace(/[^a-z0-9]+/g, '');
 };
 toUserid = toId;
 
