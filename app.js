@@ -2,13 +2,14 @@ const LOGIN_SERVER_TIMEOUT = 10000;
 
 try {
 	require('nodetime').profile({
-		accountKey: '42437e1e248457af9645471075b01b12c01d8493', 
+		accountKey: '42437e1e248457af9645471075b01b12c01d8493',
 		appName: 'Pokemon Showdown'
 	});
 } catch(e) {}
 
 require('sugar');
 
+unorm = require("unorm").nfkd;
 fs = require('fs');
 if (!fs.existsSync) {
 	var path = require('path');
@@ -262,7 +263,7 @@ toId = function(text) {
 	else if (text && text.userid) text = text.userid;
 	text = string(text);
 	if (typeof text !== 'string') return ''; //???
-	return text.toLowerCase().replace(/[^a-z0-9]+/g, '');
+	return unorm(text).toLowerCase().replace(/[^a-z0-9]+/g, '');
 };
 toUserid = toId;
 

@@ -7,7 +7,7 @@ var people = {};
 var numPeople = 0;
 
 function sanitizeName(name) {
-	name = name.trim();
+	name = unorm(name).trim();
 	if (name.length > 18) name = name.substr(0,18);
 	while (config.groups[name.substr(0,1)]) {
 		name = name.substr(1);
@@ -1001,4 +1001,3 @@ exports.setOfflineGroup = function(name, group) {
 	}
 	exportUsergroups();
 };
-
