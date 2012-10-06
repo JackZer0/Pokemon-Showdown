@@ -127,7 +127,7 @@ var User = (function () {
 
 		if (person.user) person.user = this;
 		this.people = [person];
-		this.ip = person.ip;
+		Object.defineProperty(this, "ip", {value: person.ip, writable: false, enumerable: false, configurable: false});
 
 		this.muted = !!ipSearch(this.ip,mutedIps);
 		this.prevNames = {};
