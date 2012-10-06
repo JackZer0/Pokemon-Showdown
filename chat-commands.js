@@ -233,7 +233,10 @@ function parseCommandLocal(user, cmd, target, room, socket, message) {
 		break;
 
 	case 'register':
-		emit(socket, 'console', 'You must win a rated battle to register.');
+	    if (user.authenticated)
+    		emit(socket, 'console', 'You are already registered.');
+	    else
+	        emit(socket, 'console', {evalRawMessage: "overlay('register',{ifuserid:me.userid}); \"Showing registration popup.\""});
 		return false;
 		break;
 
