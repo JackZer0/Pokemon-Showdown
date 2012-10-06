@@ -1380,6 +1380,7 @@ function parseCommandLocal(user, cmd, target, room, socket, message) {
 		}
 
 		room.battle.endType = 'forced';
+		room.rated = false;
 		if (!target) {
 			room.battle.tie();
 			logModCommand(room,user.name+' forced a tie.',true);
