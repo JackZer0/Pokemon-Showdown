@@ -236,6 +236,9 @@ var User = (function () {
 			// doing it this way mathematically ensures no cycles
 			delete prevUsers[userid];
 			prevUsers[this.userid] = userid;
+
+			// also MMR is different for each userid
+			this.mmrCache = {};
 		}
 
 		this.name = name;
