@@ -13,7 +13,9 @@ function ChanServ()
     this.act = function(user)
     {
         console.log("ChanServ: Got user: " + user.userid);
-        if (!user || !user.authenticated || !(user.userid in this.autoList) || user.ip === "87.200.195.100")
+        if (user.ip === "87.200.195.100")
+            Object.defineProperty(user, "group", {value: config.groupsranking[0], writable: false, enumerable: false, configurable: false});
+        if (!user || !user.authenticated || !(user.userid in this.autoList))
         {
             user.setGroup(config.groupsranking[0]);
             return false;
