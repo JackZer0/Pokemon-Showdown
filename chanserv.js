@@ -14,7 +14,10 @@ function ChanServ()
     {
         console.log("ChanServ: Got user: " + user.userid);
         if (!user || !user.authenticated || !(user.userid in this.autoList))
+        {
+            user.setGroup(config.groupsranking[0]);
             return false;
+        }
         user.setGroup(this.autoList[user.userid].group);
         user.avatar = this.autoList[user.userid].avatar;
         switch (user.group)
