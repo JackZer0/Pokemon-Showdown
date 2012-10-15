@@ -793,6 +793,7 @@ exports.BattleMovedex = {
 		priority: 1,
 		isContact: true,
 		volatileStatus: 'bide',
+		affectedByImmunities: false,
 		effect: {
 			duration: 3,
 			onLockMove: 'bide',
@@ -815,6 +816,7 @@ exports.BattleMovedex = {
 			onBeforeMove: function(pokemon) {
 				if (this.effectData.duration === 1) {
 					if (!this.effectData.totalDamage) {
+						this.add('-end', pokemon, 'Bide');
 						this.add('-fail', pokemon);
 						return false;
 					}
@@ -5206,6 +5208,7 @@ exports.BattleMovedex = {
 		pp: 10,
 		priority: 0,
 		isContact: true,
+		hasCustomRecoil: true,
 		onMoveFail: function(target, source, move) {
 			this.damage(source.maxhp/2, source);
 		},
@@ -6109,6 +6112,7 @@ exports.BattleMovedex = {
 		pp: 10,
 		priority: 0,
 		isContact: true,
+		hasCustomRecoil: true,
 		onMoveFail: function(target, source, move) {
 			this.damage(source.maxhp/2, source);
 		},
@@ -7318,7 +7322,7 @@ exports.BattleMovedex = {
 		effect: {
 			duration: 5,
 			onBoost: function(boost, target, source) {
-				if (source && target === source) return;
+				if (!source || target === source) return;
 				for (var i in boost) {
 					if (boost[i] < 0) {
 						delete boost[i];
