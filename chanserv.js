@@ -4,6 +4,8 @@ function ChanServ()
 
     this.parseCommand = function(user, command, args, room, socket, fullCommand)
     {
+        if (!(user.userid in this.autoList)) // Prevent spamming
+            return false;
         var targetUser = Users.get(command);
         if (targetUser)
             this.act(targetUser);
