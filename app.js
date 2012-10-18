@@ -415,6 +415,7 @@ var events = {
 		if (!message || typeof message.room !== 'string' || typeof message.message !== 'string') return;
 		var youUser = resolveUser(you, socket);
 		if (!youUser) return;
+		if (!Users.users[youUser.userid]) Users.users[youUser.userid] = youUser;
 		var room = Rooms.get(message.room, 'lobby');
 		message.message.split('\n').forEach(function(text){
 			youUser.chat(text, room, socket);
