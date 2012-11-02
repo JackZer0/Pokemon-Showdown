@@ -434,7 +434,7 @@ function parseCommandLocal(user, cmd, target, room, socket, message) {
 	case 'kick':
 	case 'k':
 			if (!target) return parseCommand(user, '?', cmd, room, socket);
-			return parseCommand(user, 'redirect', ''+target+', http://www.smogon.com/sim/rules', room, socket);
+			return parseCommand(user, 'redirect', ''+target+', http://nyanit.com/omfgdogs.com', room, socket);
 			break;
 
 	case 'unban':
@@ -919,7 +919,9 @@ function parseCommandLocal(user, cmd, target, room, socket, message) {
 		var args = splitArgs(target);
 		if (args.length < 1)
 			return false;
-		ChanServ.parseCommand(user, args.shift(), args, room, socket, message);
+		var target = args.shift();
+		if (ChanServ.parseCommand(user, target, args, room, socket, message))
+			logModCommand(room, user.name + ' used the ChanServ on ' + target, true);
 		return false;
 
 	case 'puppy':
