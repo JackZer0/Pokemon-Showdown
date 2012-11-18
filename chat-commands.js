@@ -1027,13 +1027,23 @@ function parseCommandLocal(user, cmd, target, room, socket, message) {
 
 	case 'groups':
 	case '!groups':
+	    var groups =
+	    [
+			'<b>鳳</b> - Pheonix-M<br />' +
+			'<b>凰</b> - Pheonix-F<br />',
+			'<b>方</b> - Direction<br />',
+			'<b>魈</b> - Elf<br />',
+			'<b>禁</b> - Prohibit<br />',
+			'<b>名</b> - Name<br />',
+			'<b>人</b> - Person<br />',
+			'<b>龍</b> - Dragon<br />',
+			'<b>哑</b> - Dumb<br />',
+			'<b>叫</b> - Shout<br />'
+	    ].randomize();
 		showOrBroadcastStart(user, cmd, room, socket, message);
 		showOrBroadcast(user, cmd, room, socket,
 			'<div style="border:1px solid #6688AA;padding:2px 4px">' +
-			'<b>北</b> - Bad northerners. Don\'t talk to them<br />' +
-			'<b>東</b> - Normal easterner, nothing special<br />' +
-			'<b>南</b> - Slightly more special southerner<br />' +
-			'<b>西</b> - Overlord westerner<br />' +
+			groups.join('') +
 			'</div>');
 		return false;
 		break;

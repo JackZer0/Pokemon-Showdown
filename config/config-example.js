@@ -107,38 +107,76 @@ exports.modchat = false;
 //     - potd: Set PotD.
 //     - forcewin: /forcewin command.
 //     - battlemessage: /a command.
-exports.groupsranking = ['東', '南', '西', '北'];
+exports.groupsranking = ['龍', '鳳', '凰', '魈', '禁', '名', '方', '哑', '叫', '人'];
 exports.groups = {
-	'北': {
-		id: "北",
-		name: "北",
+	'龍': {
+		id: "龍",
+		name: "龍",
 		root: true
 	},
-	'西': {
-		id: "西",
-		name: "西",
-		inherit: '南',
-		jurisdiction: '西u',
-		ban: 'true',
-		namelock: 'true',
-		forcerename: 'true',
+	'鳳': {
+		id: "鳳",
+		name: "鳳",
+		inherit: '凰',
+		jurisdiction: '鳳u',
+		declare: true,
+		promote: true
+	},
+	'凰': {
+		id: "凰",
+		name: "凰",
+		inherit: '魈',
+		jurisdiction: '凰u',
+		forcewin: true
+	},
+	'魈': {
+		id: "魈",
+		name: "魈",
+		inherit: '禁',
+		potd: true,
+		modchatall: true,
+		ignorelimits: true
+	},
+	'禁': {
+		id: "禁",
+		name: "禁",
+		inherit: '名',
+		ban: true
+	},
+	'名': {
+		id: "名",
+		name: "名",
+		inherit: '方',
+		forcerename: true,
 		forcerenameto: true,
+		namelock: true
+	},
+	'方': {
+		id: "方",
+		name: "方",
+		inherit: '哑',
 		redirect: true
 	},
-	'南': {
-		id: "南",
-		name: "南",
-		inherit: '東',
-		broadcast: true,
-		announce: true,
-		modlog: true,
-		modchatall: true,
+	'哑': {
+		id: "哑",
+		name: "哑",
+		inherit: '叫',
+		jurisdiction: 'u',
 		mute: 'true',
-		potd: 'true',
-		ignorelimits: 'true'
+		modchat: true
 	},
-	'東': {
+	'叫': {
+		id: "叫",
+		name: "叫",
+		inherit: '人',
+		broadcast: true,
+		announce: true
+	},
+	'人': {
+		id: "人",
+		name: "人",
 		jurisdiction: 's',
+		modlog: true,
 		ip: true,
 		alts: true
 	}
