@@ -107,7 +107,7 @@ exports.modchat = false;
 //     - potd: Set PotD.
 //     - forcewin: /forcewin command.
 //     - battlemessage: /a command.
-exports.groupsranking = ['龍', '鳳', '凰', '魈', '禁', '名', '方', '哑', '叫', '人'];
+exports.groupsranking = ['人', '叫', '哑', '方', '名', '禁', '魈', '凰', '鳳', '龍'];
 exports.groups = {
 	'龍': {
 		id: "龍",
