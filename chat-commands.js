@@ -1029,16 +1029,12 @@ function parseCommandLocal(user, cmd, target, room, socket, message) {
 	case '!groups':
 	    var groups =
 	    [
-			'<b>鳳</b> - Pheonix-M<br />' +
-			'<b>凰</b> - Pheonix-F<br />',
+			'<b>鳳</b> - Pheonix<br />',
 			'<b>方</b> - Direction<br />',
 			'<b>魈</b> - Elf<br />',
-			'<b>禁</b> - Prohibit<br />',
 			'<b>名</b> - Name<br />',
 			'<b>人</b> - Person<br />',
-			'<b>龍</b> - Dragon<br />',
-			'<b>哑</b> - Dumb<br />',
-			'<b>叫</b> - Shout<br />'
+			'<b>龍</b> - Dragon<br />'
 	    ].randomize();
 		showOrBroadcastStart(user, cmd, room, socket, message);
 		showOrBroadcast(user, cmd, room, socket,

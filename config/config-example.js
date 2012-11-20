@@ -107,7 +107,7 @@ exports.modchat = false;
 //     - potd: Set PotD.
 //     - forcewin: /forcewin command.
 //     - battlemessage: /a command.
-exports.groupsranking = ['人', '叫', '哑', '方', '名', '禁', '魈', '凰', '鳳', '龍'];
+exports.groupsranking = ['人', '方', '名', '魈', '鳳', '龍'];
 exports.groups = {
 	'龍': {
 		id: "龍",
@@ -117,30 +117,19 @@ exports.groups = {
 	'鳳': {
 		id: "鳳",
 		name: "鳳",
-		inherit: '凰',
+		inherit: '魈',
 		jurisdiction: '鳳u',
 		declare: true,
-		promote: true
-	},
-	'凰': {
-		id: "凰",
-		name: "凰",
-		inherit: '魈',
-		jurisdiction: '凰u',
+		promote: true,
 		forcewin: true
 	},
 	'魈': {
 		id: "魈",
 		name: "魈",
-		inherit: '禁',
+		inherit: '名',
 		potd: true,
 		modchatall: true,
-		ignorelimits: true
-	},
-	'禁': {
-		id: "禁",
-		name: "禁",
-		inherit: '名',
+		ignorelimits: true,
 		ban: true
 	},
 	'名': {
@@ -154,21 +143,11 @@ exports.groups = {
 	'方': {
 		id: "方",
 		name: "方",
-		inherit: '哑',
-		redirect: true
-	},
-	'哑': {
-		id: "哑",
-		name: "哑",
-		inherit: '叫',
-		jurisdiction: 'u',
-		mute: 'true',
-		modchat: true
-	},
-	'叫': {
-		id: "叫",
-		name: "叫",
 		inherit: '人',
+		jurisdiction: 'u',
+		redirect: true,
+		mute: 'true',
+		modchat: true,
 		broadcast: true,
 		announce: true
 	},
