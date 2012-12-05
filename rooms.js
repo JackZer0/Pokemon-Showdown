@@ -538,35 +538,12 @@ function BattleRoom(roomid, format, p1, p2, parentid, rated) {
 			emit(socket, 'message', "Your message is too long:\n\n"+message);
 			return;
 		}
-		if (message.substr(0,2) === '//') {
-			message = message.substr(1);
-		} else if (message.substr(0,1) === '/') {
-			var spaceIndex = message.indexOf(' ');
-			if (spaceIndex > 0) {
-				cmd = message.substr(1, spaceIndex-1);
-				target = message.substr(spaceIndex+1);
-			} else {
-				cmd = message.substr(1);
-				target = '';
-			}
-		} else if (message.substr(0,1) === '!') {
-			var spaceIndex = message.indexOf(' ');
-			if (spaceIndex > 0) {
-				cmd = message.substr(0, spaceIndex);
-				target = message.substr(spaceIndex+1);
-			} else {
-				cmd = message;
-				target = '';
-			}
-		}
 
-		var parsedMessage = parseCommand(user, cmd, target, selfR, socket, message);
-		if (typeof parsedMessage === 'string') {
-			message = parsedMessage;
-		}
-		if (parsedMessage === false) {
-			// do nothing
-		} else if (message.substr(0,3) === '>> ') {
+		var parsedMessage = Commands.parse(user, message, selfR, socket);
+		if (!parsedMessage) return;
+		if (typeof parsedMessage === 'string') message = parsedMessage;
+
+		if (message.substr(0,3) === '>> ') {
 			var cmd = message.substr(3);
 
 			var room = selfR;
@@ -1008,34 +985,12 @@ function LobbyRoom(roomid) {
 			emit(socket, 'message', "Your message is too long:\n\n"+message);
 			return;
 		}
-		var cmd = '', target = '';
-		if (message.substr(0,2) === '//') {
-			message = message.substr(1);
-		} else if (message.substr(0,1) === '/') {
-			var spaceIndex = message.indexOf(' ');
-			if (spaceIndex > 0) {
-				cmd = message.substr(1, spaceIndex-1);
-				target = message.substr(spaceIndex+1);
-			} else {
-				cmd = message.substr(1);
-				target = '';
-			}
-		} else if (message.substr(0,1) === '!') {
-			var spaceIndex = message.indexOf(' ');
-			if (spaceIndex > 0) {
-				cmd = message.substr(0, spaceIndex);
-				target = message.substr(spaceIndex+1);
-			} else {
-				cmd = message;
-				target = '';
-			}
-		}
 
-		var parsedMessage = parseCommand(user, cmd, target, selfR, socket, message);
+		var parsedMessage = Commands.parse(user, message, selfR, socket);
+		if (!parsedMessage) return;
 		if (typeof parsedMessage === 'string') message = parsedMessage;
-		if (parsedMessage === false) {
-			// do nothing
-		} else if (message.substr(0,3) === '>> ') {
+
+		if (message.substr(0,3) === '>> ') {
 			var cmd = message.substr(3);
 
 			var room = selfR;

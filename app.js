@@ -309,7 +309,7 @@ Rooms = require('./rooms.js');
 
 Verifier = require('./verifier.js');
 
-parseCommand = require('./chat-commands.js').parseCommand;
+Commands = require('./commands.js');
 
 Simulator = require('./simulator.js');
 
