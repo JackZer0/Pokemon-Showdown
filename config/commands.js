@@ -1038,7 +1038,7 @@ var commands = exports.commands = {
 
 		if (cmd in {'':1, show:1, view:1, display:1}) {
 			if (!this.canBroadcast()) return;
-			message = "<strong><font size=\"3\">Reminders for " + room.title + ":</font></strong>";
+			message = "<strong><font size=\"3\">" + (room.id === 'lobby' ? "Pokemon XYZ Empire" : "Reminders for " + room.title + ":") + "</font></strong>";
 			if (room.reminders && room.reminders.length > 0)
 				message += '<ol><li>' + room.reminders.join('</li><li>') + '</li></ol>';
 			else
