@@ -1029,6 +1029,10 @@ var commands = exports.commands = {
 	 * Custom commands
 	 *********************************************************/
 
+	spank: function(target, room, user) {
+		return this.parse("/me spanks " + target + "!");
+	},
+
 	reminders: 'reminder',
 	reminder: function(target, room, user) {
 		if (room.type !== 'chat') return this.sendReply("This command can only be used in chatrooms.");
