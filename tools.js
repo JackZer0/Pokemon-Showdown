@@ -478,7 +478,7 @@ module.exports = (function () {
 		do {
 			alreadyChecked[template.speciesid] = true;
 			// Stabmons hack to avoid copying all of validateSet to formats.
-			if (format.id === 'gen5stabmons' && template.types.indexOf(this.getMove(move).type) > -1) return false;
+			if (format.id === 'stabmons' && template.types.indexOf(this.getMove(move).type) > -1) return false;
 			if (template.learnset) {
 				if (template.learnset[move] || template.learnset['sketch']) {
 					sometimesPossible = true;
@@ -837,9 +837,21 @@ module.exports = (function () {
 		var setHas = {};
 
 		if (!template || !template.abilities) {
-			set.species = 'Bulbasaur';
-			template = this.getTemplate('Bulbasaur');
+			set.species = 'Unown';
+			template = this.getTemplate('Unown');
 		}
+
+		if (format.ruleset) {
+			for (var i=0; i<format.ruleset.length; i++) {
+				var subformat = this.getFormat(format.ruleset[i]);
+				if (subformat.validateSet) {
+					problems = problems.concat(subformat.validateSet.call(this, set, format)||[]);
+				}
+			}
+		}
+		template = this.getTemplate(set.species);
+		item = this.getItem(set.item);
+		ability = this.getAbility(set.ability);
 
 		var banlistTable = this.getBanlistTable(format);
 
@@ -975,7 +987,7 @@ module.exports = (function () {
 						if (eventData.isHidden !== undefined && eventData.isHidden !== isHidden) {
 							problems.push(name+(isHidden?" can't have":" must have")+" its hidden ability because it comes from a specific event.");
 						}
-						if (eventData.abilities && eventData.abilities.indexOf(ability.id) < 0) {
+						if (this.gen <= 5 && eventData.abilities && eventData.abilities.indexOf(ability.id) < 0) {
 							problems.push(name+" must have "+eventData.abilities.join(" or ")+" because it comes from a specific event.");
 						}
 						if (eventData.gender) {
@@ -1048,14 +1060,6 @@ module.exports = (function () {
 			}
 		}
 
-		if (format.ruleset) {
-			for (var i=0; i<format.ruleset.length; i++) {
-				var subformat = this.getFormat(format.ruleset[i]);
-				if (subformat.validateSet) {
-					problems = problems.concat(subformat.validateSet.call(this, set, format)||[]);
-				}
-			}
-		}
 		if (format.validateSet) {
 			problems = problems.concat(format.validateSet.call(this, set, format)||[]);
 		}
