@@ -1033,6 +1033,15 @@ var commands = exports.commands = {
 		return this.parse("/me spanks " + target + "!");
 	},
 
+	getrandom: 'pickrandom',
+	pickrandom: function (target, room, user) {
+		if (!target) return this.sendReply('/pickrandom [option 1], [option 2], ... - Randomly chooses one of the given options.');
+		if (!this.canBroadcast()) return;
+		var targets = target.split(target.indexOf(',') >= 0 ? ',' : ' ');
+		var result = Math.floor(Math.random() * targets.length);
+		return this.sendReplyBox(targets[result].trim());
+	},
+
 	reminders: 'reminder',
 	reminder: function(target, room, user) {
 		if (room.type !== 'chat') return this.sendReply("This command can only be used in chatrooms.");
