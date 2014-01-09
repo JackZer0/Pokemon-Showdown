@@ -136,6 +136,13 @@ exports.Formats = [
 		// no restrictions, for serious (other than team preview)
 		ruleset: ['Team Preview']
 	},
+	{
+                name: "Mega Battles",
+                section: "XY Singles",
+
+                ruleset: ['Pokemon', 'OHKO Clause', 'Sleep Clause Mod', 'HP Percentage Mod', 'Evasion Abilities Clause', 'megaonly', 'Team Preview'],
+                banlist: []
+        },
 
 	// XY Doubles
 	///////////////////////////////////////////////////////////////////
