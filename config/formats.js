@@ -7,22 +7,6 @@ exports.Formats = [
 	///////////////////////////////////////////////////////////////////
 
 	{
-		name: "Random Battle",
-		section: "XY Singles",
-
-		team: 'random',
-		ruleset: ['PotD', 'Pokemon', 'Sleep Clause Mod', 'HP Percentage Mod']
-	},
-	{
-		name: "Unrated Random Battle",
-		section: "XY Singles",
-
-		team: 'random',
-		challengeShow: false,
-		rated: false,
-		ruleset: ['Random Battle']
-	},
-	{
 		name: "OU",
 		section: "XY Singles",
 
@@ -123,6 +107,22 @@ exports.Formats = [
 		validateTeam: function(team, format) {
 			if (team.length < 3) return ['You must bring at least 3 Pokemon.'];
 		}
+	},
+	{
+		name: "Random Battle",
+		section: "XY Singles",
+
+		team: 'random',
+		ruleset: ['PotD', 'Pokemon', 'Sleep Clause Mod', 'HP Percentage Mod']
+	},
+	{
+		name: "Unrated Random Battle",
+		section: "XY Singles",
+
+		team: 'random',
+		challengeShow: false,
+		rated: false,
+		ruleset: ['Random Battle']
 	},
 	{
 		name: "Custom Game",
@@ -315,7 +315,7 @@ exports.Formats = [
 		debug: true,
 		ruleset: ['Team Preview']
 	},
-	
+
 	// Other Metagames
 	///////////////////////////////////////////////////////////////////
 
@@ -662,7 +662,7 @@ exports.Formats = [
 		mod: 'gen4',
 		ruleset: ['Pokemon', 'Standard'],
 		banlist: ['Uber'],
-		
+
 		column: 2
 	},
 	{
