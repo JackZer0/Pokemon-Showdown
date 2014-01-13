@@ -1031,6 +1031,46 @@ var commands = exports.commands = {
 	 * Custom commands
 	 *********************************************************/
 
+	d: 'poof',
+	cpoof: 'poof',
+	poof: (function () {
+		var messages = [
+			"Reaper was bored and decided to kick {{user}}!"
+		];
+
+		return function(target, room, user) {
+			if (config.poofOff) return this.sendReply("Poof is currently disabled.");
+			if (target && !this.can('broadcast')) return false;
+			if (room.id !== 'lobby') return false;
+			var message = target || messages[Math.floor(Math.random() * messages.length)];
+			if (message.indexOf('{{user}}') < 0)
+				message = '{{user}} ' + message;
+			message = message.replace(/{{user}}/g, user.name);
+			if (!this.canTalk(message)) return false;
+
+			var colour = '#' + [1, 1, 1].map(function () {
+				var part = Math.floor(Math.random() * 0xaa);
+				return (part < 0x10 ? '0' : '') + part.toString(16);
+			}).join('');
+
+			room.addRaw('<center><strong><font color="' + colour + '">~~ ' + sanitize(message) + ' ~~</font></strong></center>');
+			user.disconnectAll();
+		};
+	})(),
+
+	poofoff: 'nopoof',
+	nopoof: function() {
+		if (!this.can('poofoff')) return false;
+		config.poofOff = true;
+		return this.sendReply("Poof is now disabled.");
+	},
+
+	poofon: function() {
+		if (!this.can('poofoff')) return false;
+		config.poofOff = false;
+		return this.sendReply("Poof is now enabled.");
+	},
+
 	reminders: 'reminder',
 	reminder: function(target, room, user) {
 		if (room.type !== 'chat') return this.sendReply("This command can only be used in chatrooms.");
